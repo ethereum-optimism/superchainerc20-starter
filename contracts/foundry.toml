@@ -7,5 +7,6 @@ libs = ["lib"]
 
 remappings = [
   "@contracts-bedrock/=lib/optimism/packages/contracts-bedrock/src/",
-  "createx/=lib/createx/src/"
+  "createx/=lib/createx/src/",
+  "@solady/=lib/optimism/packages/contracts-bedrock/lib/solady/src/"
 ]

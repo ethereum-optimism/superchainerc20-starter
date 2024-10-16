@@ -11,13 +11,7 @@ contract ExampleERC20 {
 
     address public owner;
 
-
-    constructor(
-        address _owner,
-        string memory _name,
-        string memory _symbol,
-        uint256 _decimals
-    ) {
+    constructor(address _owner, string memory _name, string memory _symbol, uint256 _decimals) {
         owner = _owner;
         name = _name;
         symbol = _symbol;
