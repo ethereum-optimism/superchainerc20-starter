@@ -6,7 +6,6 @@ import {ICreateX} from "createx/ICreateX.sol";
 import {Preinstalls} from "@contracts-bedrock/libraries/Preinstalls.sol";
 import {ExampleERC20} from "../src/ExampleERC20.sol";
 
-
 contract SingleChainSuperchainERC20Deployment is Script {
     /// @notice Modifier that wraps a function in broadcasting.
     modifier broadcast() {
