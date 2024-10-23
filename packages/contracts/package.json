@@ -1,0 +1,9 @@
+{
+  "name": "@superchainerc20-starter/contracts",
+  "scripts": {
+    "dev": "",
+    "build": "forge build",
+    "test": "forge test"
+  },
+  "devDependencies": {}
+}
