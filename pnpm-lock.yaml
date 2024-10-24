@@ -6,4 +6,130 @@ settings:
 
 importers:
 
-  .: {}
+  .:
+    devDependencies:
+      mprocs:
+        specifier: ^0.7.1
+        version: 0.7.1
+      supersim:
+        specifier: ^0.0.3
+        version: 0.0.3
+      wait-port:
+        specifier: ^1.1.0
+        version: 1.1.0
+
+  packages/contracts: {}
+
+packages:
+
+  ansi-styles@4.3.0:
+    resolution: {integrity: sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg==}
+    engines: {node: '>=8'}
+
+  chalk@4.1.2:
+    resolution: {integrity: sha512-oKnbhFyRIXpUuez8iBMmyEa4nbj4IOQyuhc/wy9kY7/WVPcwIO9VA668Pu8RkO7+0G76SLROeyw9CpQ061i4mA==}
+    engines: {node: '>=10'}
+
+  color-convert@2.0.1:
+    resolution: {integrity: sha512-RRECPsj7iu/xb5oKYcsFHSppFNnsj/52OVTRKb4zP5onXwVF3zVmmToNcOfGC+CRDpfK/U584fMg38ZHCaElKQ==}
+    engines: {node: '>=7.0.0'}
+
+  color-name@1.1.4:
+    resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
+
+  commander@9.5.0:
+    resolution: {integrity: sha512-KRs7WVDKg86PWiuAqhDrAQnTXZKraVcCc6vFdL14qrZ/DcWwuRo7VoiYXalXO7S5GKpqYiVEwCbgFDfxNHKJBQ==}
+    engines: {node: ^12.20.0 || >=14}
+
+  debug@4.3.7:
+    resolution: {integrity: sha512-Er2nc/H7RrMXZBFCEim6TCmMk02Z8vLC2Rbi1KEBggpo0fS6l0S1nnapwmIi3yW/+GOJap1Krg4w0Hg80oCqgQ==}
+    engines: {node: '>=6.0'}
+    peerDependencies:
+      supports-color: '*'
+    peerDependenciesMeta:
+      supports-color:
+        optional: true
+
+  follow-redirects@1.15.9:
+    resolution: {integrity: sha512-gew4GsXizNgdoRyqmyfMHyAmXsZDk6mHkSxZFCzW9gwlbtOW44CDtYavM+y+72qD/Vq2l550kMF52DT8fOLJqQ==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+
+  has-flag@4.0.0:
+    resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
+    engines: {node: '>=8'}
+
+  mprocs@0.7.1:
+    resolution: {integrity: sha512-v22SIwcOphZm6XLdNfeHf4ZDYHqV1hghyfqNLwmZ604lEXlEkiuazYBWUz3xEB2GdABEAKfCZ8qiOVIoREM6CQ==}
+    engines: {node: '>=0.10.0'}
+    hasBin: true
+
+  ms@2.1.3:
+    resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
+
+  supersim@0.0.3:
+    resolution: {integrity: sha512-eGjMmmkKXfD3oX/tE+nfjloT87h6BcCSrWaqCINgbgIIM8QSgs59kz0Ysjf0/jBEzNzu8H6Fe8UcRRiEYgVslg==}
+    engines: {node: '>=18.0.0'}
+    hasBin: true
+
+  supports-color@7.2.0:
+    resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
+    engines: {node: '>=8'}
+
+  wait-port@1.1.0:
+    resolution: {integrity: sha512-3e04qkoN3LxTMLakdqeWth8nih8usyg+sf1Bgdf9wwUkp05iuK1eSY/QpLvscT/+F/gA89+LpUmmgBtesbqI2Q==}
+    engines: {node: '>=10'}
+    hasBin: true
+
+snapshots:
+
+  ansi-styles@4.3.0:
+    dependencies:
+      color-convert: 2.0.1
+
+  chalk@4.1.2:
+    dependencies:
+      ansi-styles: 4.3.0
+      supports-color: 7.2.0
+
+  color-convert@2.0.1:
+    dependencies:
+      color-name: 1.1.4
+
+  color-name@1.1.4: {}
+
+  commander@9.5.0: {}
+
+  debug@4.3.7:
+    dependencies:
+      ms: 2.1.3
+
+  follow-redirects@1.15.9: {}
+
+  has-flag@4.0.0: {}
+
+  mprocs@0.7.1: {}
+
+  ms@2.1.3: {}
+
+  supersim@0.0.3:
+    dependencies:
+      follow-redirects: 1.15.9
+    transitivePeerDependencies:
+      - debug
+
+  supports-color@7.2.0:
+    dependencies:
+      has-flag: 4.0.0
+
+  wait-port@1.1.0:
+    dependencies:
+      chalk: 4.1.2
+      commander: 9.5.0
+      debug: 4.3.7
+    transitivePeerDependencies:
+      - supports-color

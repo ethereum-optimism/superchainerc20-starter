@@ -2,8 +2,13 @@
   "name": "superchainerc20-starter",
   "description": "",
   "scripts": {
+    "dev": "mprocs",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "license": "MIT",
-  "devDependencies": {}
+  "devDependencies": {
+    "mprocs": "^0.7.1",
+    "supersim": "^0.0.3",
+    "wait-port": "^1.1.0"
+  }
 }
