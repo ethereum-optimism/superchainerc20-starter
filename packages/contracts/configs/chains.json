@@ -1,0 +1,168 @@
+{
+  "mainnet": [
+    {
+      "name": "OP Mainnet",
+      "chainId": 10,
+      "rpcUrl": "https://mainnet.optimism.io"
+    },
+    {
+      "name": "Ethernity",
+      "chainId": 183,
+      "rpcUrl": "https://mainnet.ethernitychain.io"
+    },
+    {
+      "name": "Swan Chain Mainnet",
+      "chainId": 254,
+      "rpcUrl": "https://mainnet-rpc.swanchain.org"
+    },
+    {
+      "name": "Orderly Mainnet",
+      "chainId": 291,
+      "rpcUrl": "https://rpc.orderly.network"
+    },
+    {
+      "name": "Shape",
+      "chainId": 360,
+      "rpcUrl": "https://mainnet.shape.network/"
+    },
+    {
+      "name": "World Chain",
+      "chainId": 480,
+      "rpcUrl": "https://worldchain-mainnet.g.alchemy.com/public"
+    },
+    {
+      "name": "Binary Mainnet",
+      "chainId": 624,
+      "rpcUrl": "https://rpc.zero.thebinaryholdings.com"
+    },
+    {
+      "name": "Lyra Chain",
+      "chainId": 957,
+      "rpcUrl": "https://rpc.lyra.finance"
+    },
+    {
+      "name": "Lisk",
+      "chainId": 1135,
+      "rpcUrl": "https://rpc.api.lisk.com"
+    },
+    {
+      "name": "Metal L2",
+      "chainId": 1750,
+      "rpcUrl": "https://rpc.metall2.com"
+    },
+    {
+      "name": "RACE Mainnet",
+      "chainId": 6805,
+      "rpcUrl": "https://racemainnet.io"
+    },
+    {
+      "name": "Cyber Mainnet",
+      "chainId": 7560,
+      "rpcUrl": "https://rpc.cyber.co"
+    },
+    {
+      "name": "Base",
+      "chainId": 8453,
+      "rpcUrl": "https://mainnet.base.org"
+    },
+    {
+      "name": "Funki",
+      "chainId": 33979,
+      "rpcUrl": "https://rpc-mainnet.funkichain.com"
+    },
+    {
+      "name": "Mode",
+      "chainId": 34443,
+      "rpcUrl": "https://mainnet.mode.network"
+    },
+    {
+      "name": "Automata Mainnet",
+      "chainId": 65536,
+      "rpcUrl": "https://rpc.ata.network"
+    },
+    {
+      "name": "Zora",
+      "chainId": 7777777,
+      "rpcUrl": "https://rpc.zora.energy"
+    }
+  ],
+  "sepolia": [
+    {
+      "name": "Binary Sepolia",
+      "chainId": 625,
+      "rpcUrl": "https://rpc.testnet.thebinaryholdings.com"
+    },
+    {
+      "name": "Mode Testnet",
+      "chainId": 919,
+      "rpcUrl": "https://sepolia.mode.network"
+    },
+    {
+      "name": "Unichain Sepolia Testnet",
+      "chainId": 1301,
+      "rpcUrl": "https://sepolia.unichain.org"
+    },
+    {
+      "name": "Metal L2 Testnet",
+      "chainId": 1740,
+      "rpcUrl": "https://testnet.rpc.metall2.com"
+    },
+    {
+      "name": "Lisk Sepolia Testnet",
+      "chainId": 4202,
+      "rpcUrl": "https://rpc.sepolia-api.lisk.com"
+    },
+    {
+      "name": "World Chain Sepolia Testnet",
+      "chainId": 4801,
+      "rpcUrl": "https://worldchain-sepolia.g.alchemy.com/public"
+    },
+    {
+      "name": "RACE Testnet",
+      "chainId": 6806,
+      "rpcUrl": "https://racetestnet.io"
+    },
+    {
+      "name": "Shape Sepolia Testnet",
+      "chainId": 11011,
+      "rpcUrl": "https://sepolia.shape.network/"
+    },
+    {
+      "name": "Base Sepolia Testnet",
+      "chainId": 84532,
+      "rpcUrl": "https://sepolia.base.org"
+    },
+    {
+      "name": "Funki Sepolia Sandbox",
+      "chainId": 3397901,
+      "rpcUrl": "https://funki-testnet.alt.technology"
+    },
+    {
+      "name": "OP Sepolia Testnet",
+      "chainId": 11155420,
+      "rpcUrl": "https://sepolia.optimism.io"
+    },
+    {
+      "name": "Cyber Testnet",
+      "chainId": 111557560,
+      "rpcUrl": "https://rpc.testnet.cyber.co"
+    },
+    {
+      "name": "Zora Sepolia Testnet",
+      "chainId": 999999999,
+      "rpcUrl": "https://sepolia.rpc.zora.energy"
+    }
+  ],
+  "sepolia-dev-0": [
+    {
+      "name": "OP Labs Sepolia devnet 0",
+      "chainId": 11155421,
+      "rpcUrl": ""
+    },
+    {
+      "name": "Base devnet 0",
+      "chainId": 11763072,
+      "rpcUrl": ""
+    }
+  ]
+}
