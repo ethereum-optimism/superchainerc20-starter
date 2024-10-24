@@ -1,3 +1,7 @@
+[rpc_endpoints]
+op_chain_a = "http://127.0.0.1:9545"
+op_chain_b = "http://127.0.0.1:9546"
+
 [profile.default]
 src = "src"
 script = "scripts"

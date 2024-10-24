@@ -13,9 +13,13 @@ contract MultiChainSuperchainERC20Deployment is Script, SuperchainERC20Deployer 
     function setUp() public {}
 
     function run() public {
-        string[] memory rpcUrls = vm.envString("RPC_URLS", ",");
+        string[2][] memory rpcUrls = vm.rpcUrls();
         for (uint256 i = 0; i < rpcUrls.length; i++) {
-            vm.createSelectFork(rpcUrls[i]);
+            string memory rpcAlias = rpcUrls[i][0];
+
+            console.log("Deploying to chain: ", rpcAlias);
+
+            vm.createSelectFork(rpcAlias);
             deployL2NativeSuperchainERC20();
         }
     }

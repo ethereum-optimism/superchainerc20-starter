@@ -1,0 +1,7 @@
+procs:
+  supersim:
+    cwd: .
+    shell: pnpm supersim
+  deploy-contracts:
+    cwd: packages/contracts
+    shell: pnpm dev
