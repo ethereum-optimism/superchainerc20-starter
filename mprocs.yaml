@@ -2,6 +2,9 @@ procs:
   supersim:
     cwd: .
     shell: pnpm supersim
+  frontend:
+    cwd: packages/frontend
+    shell: pnpm dev
   deploy-contracts:
     cwd: packages/contracts
     shell: pnpm deploy:dev
