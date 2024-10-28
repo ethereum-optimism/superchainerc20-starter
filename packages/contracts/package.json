@@ -1,7 +1,7 @@
 {
   "name": "@superchainerc20-starter/contracts",
   "scripts": {
-    "deploy:dev": "source .env && wait-port 8420 && forge script scripts/MultiChainSuperchainERC20Deployment.s.sol --broadcast --private-key $DEPLOYER_PRIVATE_KEY",
+    "deploy:dev": "source .env && wait-port  http://:8420/ready && forge script scripts/MultiChainSuperchainERC20Deployment.s.sol --broadcast --private-key $DEPLOYER_PRIVATE_KEY",
     "build": "forge build",
     "test": "forge test"
   },
