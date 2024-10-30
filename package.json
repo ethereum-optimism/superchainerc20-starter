@@ -3,7 +3,7 @@
   "description": "",
   "scripts": {
     "dev": "mprocs",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "install:contracts": "cd packages/contracts && forge install"
   },
   "license": "MIT",
   "devDependencies": {
