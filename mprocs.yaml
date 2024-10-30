@@ -1,7 +1,7 @@
 procs:
   supersim:
     cwd: .
-    shell: pnpm supersim
+    shell: pnpm supersim --interop.autorelay
   frontend:
     cwd: packages/frontend
     shell: pnpm dev
