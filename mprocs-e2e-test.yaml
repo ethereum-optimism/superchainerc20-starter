@@ -1,16 +1,13 @@
 procs:
   supersim:
     cwd: .
-    shell: pnpm supersim --interop.autorelay --logs.directory supersim-logs
+    shell: pnpm supersim --logs.directory supersim-logs
   supersim-chain-901:
     cwd: supersim-logs
     shell: wait-port  http://:8420/ready && tail -f anvil-901.log
   supersim-chain-902:
     cwd: supersim-logs
     shell: wait-port  http://:8420/ready && tail -f anvil-902.log
-  frontend:
-    cwd: packages/frontend
-    shell: pnpm dev
-  deploy-contracts:
+  deploy-and-test:
     cwd: packages/contracts
-    shell: pnpm deploy:dev
+    shell: pnpm deploy:dev && (cd ../e2e-test && pnpm test)

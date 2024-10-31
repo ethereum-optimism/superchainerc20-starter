@@ -4,6 +4,8 @@
 
 .DS_Store
 
+mprocs.log
+
 # typescript
 
 node_modules/
