@@ -6,10 +6,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { chains } from '@/config'
 import { useTokenInfo } from "@/components/TokenInfo"
 import { parseUnits } from 'viem'
+import { contracts } from '@eth-optimism/viem'
 import { useAccount, useSimulateContract, useSwitchChain, useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 import { envVars } from '@/envVars'
 import { SuperchainTokenBridgeAbi } from '@/abi/SuperchainTokenBridgeAbi'
-import { SuperchainTokenBridgeAddress } from '@/constants/addresses'
 
 export const Bridge = () => {
   const { address } = useAccount()
@@ -29,15 +29,13 @@ export const Bridge = () => {
 
   const simulationResult = useSimulateContract({
     abi: SuperchainTokenBridgeAbi,
-    address: SuperchainTokenBridgeAddress,
+    address: contracts.superchainTokenBridge.address,
     functionName: 'sendERC20',
     args: [envVars.VITE_TOKEN_CONTRACT_ADDRESS, address!, amountUnits, BigInt(targetChainId)],
     chainId: sourceChainId,
   })
 
-  const err = simulationResult.error
-
-  const { data: hash, isPending: isSendPending, writeContract, error, reset } = useWriteContract()
+  const { data: hash, isPending: isSendPending, writeContract, reset } = useWriteContract()
 
   const handleSourceChainChange = async (chainId: string) => {
     try {
