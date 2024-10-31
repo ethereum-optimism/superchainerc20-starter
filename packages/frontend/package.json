@@ -35,7 +35,7 @@
     "react-dom": "^18.3.1",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
-    "viem": "2.x",
+    "viem": "^2.21.37",
     "wagmi": "^2.12.25",
     "znv": "^0.4.0",
     "zod": "^3.23.8",

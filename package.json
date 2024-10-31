@@ -3,11 +3,17 @@
   "description": "",
   "scripts": {
     "dev": "mprocs",
-    "install:contracts": "cd packages/contracts && forge install"
+    "install:contracts": "cd packages/contracts && forge install",
+    "contracts:update:rpcs": "pnpm nx run @superchainerc20-starter/contracts:update:rpcs",
+    "contracts:deploy:multichain": "pnpm nx run @superchainerc20-starter/contracts:deploy:multichain",
+    "contracts:deploy:singlechain": "pnpm nx run @superchainerc20-starter/contracts:deploy:singlechain",
+    "update:toc": "doctoc README.md"
   },
   "license": "MIT",
   "devDependencies": {
+    "doctoc": "^2.2.1",
     "mprocs": "^0.7.1",
+    "nx": "^20.0.7",
     "prettier": "^3.3.3",
     "supersim": "^0.0.4",
     "wait-port": "^1.1.0"
