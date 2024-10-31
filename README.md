@@ -3,6 +3,8 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [SuperchainERC20 Starter Kit](#superchainerc20-starter-kit)
+  - [What is SuperchainERC20?](#what-is-superchainerc20)
+    - [`ICrosschainERC20`](#icrosschainerc20)
   - [Getting Started](#getting-started)
     - [1. Install prerequisites: `foundry`](#1-install-prerequisites-foundry)
     - [2. Clone the repository:](#2-clone-the-repository)
@@ -10,7 +12,7 @@
     - [4. Install project dependencies using pnpm:](#4-install-project-dependencies-using-pnpm)
     - [5. Install smart contracts dependencies:](#5-install-smart-contracts-dependencies)
     - [6. Start the development environment:](#6-start-the-development-environment)
-  - [Deploying tokens](#deploying-tokens)
+  - [Deploying SuperchainERC20s](#deploying-superchainerc20s)
     - [Configuring RPC urls](#configuring-rpc-urls)
     - [Deployment config](#deployment-config)
       - [`[deploy-config]`](#deploy-config)
@@ -23,6 +25,22 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 # SuperchainERC20 Starter Kit
+
+## What is SuperchainERC20?
+
+The full spec for the SuperchainERC20 standard can be found at: https://specs.optimism.io/interop/token-bridging.html#superchainerc20-standard. 
+
+The `SuperchainERC20` standard is a cross-chain-compatible ERC20 token design that ensures token fungibility across chains within the Superchain ecosystem. Built with interoperability in mind, `SuperchainERC20` tokens can be fungible across the Superchain using the `SuperchainERC20Bridge`.
+
+**Notice**: ERC20s that do not use `SuperchainERC20Bridge` can still be fungible across the Superchain with interop message passing using a custom bridge and implementing `ICrosschainERC20`.
+
+### `ICrosschainERC20`
+
+To achieve cross-chain functionality, the `SuperchainERC20` standard incorporates the `ICrosschainERC20` interface, defining essential functions and events:
+
+- **`crosschainMint`**: Mints tokens on the destination chain as part of a cross-chain transfer.
+- **`crosschainBurn`**: Burns tokens on the source chain to facilitate the transfer.
+- **Events (`CrosschainMint` and `CrosschainBurn`)**: Emit when tokens are minted or burned, enabling transparent tracking of cross-chain transactions.
 
 ## Getting Started
 
@@ -68,7 +86,7 @@ This command will:
 pnpm dev
 ```
 
-## Deploying tokens
+## Deploying SuperchainERC20s
 
 ### Configuring RPC urls
 
