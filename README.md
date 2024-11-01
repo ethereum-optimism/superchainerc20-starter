@@ -31,10 +31,8 @@
 
 ## What is SuperchainERC20?
 
-The full spec for the SuperchainERC20 standard can be found at: https://specs.optimism.io/interop/token-bridging.html#superchainerc20-standard. 
-
 `SuperchainERC20` is an implementation of [ERC-7802](https://ethereum-magicians.org/t/erc-7802-crosschain-token-interface/21508) designed to enable asset interoperability in the Superchain.
-`SuperchainERC20` tokens are fungible across the Superchain by giving the `SuperchainERC20Bridge` permission to mint and burn the token during cross-chain transfers.
+`SuperchainERC20` tokens are fungible across the Superchain by giving the `SuperchainERC20Bridge` permission to mint and burn the token during cross-chain transfers. For more information on SuperchainERC20 please visit the [docs](https://docs.optimism.io/stack/interop/superchain-erc20).
 
 **Note**: ERC20 tokens that do not utilize the `SuperchainERC20Bridge` for cross-chain transfers can still achieve fungibility across the Superchain through interop message passing with a custom bridge solution. For these custom tokens, implementing [ERC-7802](https://ethereum-magicians.org/t/erc-7802-crosschain-token-interface/21508) is strongly recommended, as it unifies cross-chain mint and burn interfaces, enabling tokens to benefit from a standardized approach to cross-chain transfers.
 
@@ -109,7 +107,7 @@ The deployment configuration for token deployments is managed through the `deplo
 
 This section defines parameters for deploying token contracts across both single and multi-chain environments.
 
-- `salt`: A unique identifier used for deploying token contracts via [`Create2`]. This value along with the contract bytecode and deployer ensures that contract deployments are deterministic.
+- `salt`: A unique identifier used for deploying token contracts via [`Create2`]. This value along with the contract bytecode ensures that contract deployments are deterministic.
     - example: `salt = "ethers phoenix"`
 
 #### `[token]`
@@ -170,6 +168,12 @@ pnpm contracts:deploy:singlechain
 
 #### Use Create2 to deploy SuperchainERC20
 
-`Create2` ensures that the address is deterministically deterimined by the deployer address, byte code of the contract, and the provided salt. This is crucial because in order for cross-chain transfers of `SuperchainERC20`s to work, the tokens must be deployed at the same address across all chains.
+`Create2` ensures that the address is deterministically deterimined by the bytecode of the contract and the provided salt. This is crucial because in order for cross-chain transfers of `SuperchainERC20`s to work with interop, the tokens must be deployed at the same address across all chains.
+
+#### `crossChainMint` and `crosschainBurn` permissions
+
+For best security practices `SuperchainERC20Bridge` should be the only contract with permission to call `crosschainMint` and `crosschainBurn`. These permissions are set up by default when using the `SuperchainERC20` contract.
 
 ### (TODO) Add example of how to bridge a deployed token to another chain
+
+Interop is not 
