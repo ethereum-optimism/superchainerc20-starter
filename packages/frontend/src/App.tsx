@@ -1,7 +1,6 @@
 import { ArrowLeftRight as BridgeIcon, Droplet, RefreshCw } from "lucide-react";
 import { Bridge } from "@/Bridge";
 import { Providers } from "@/Providers";
-import { TokenSupply } from "@/TokenSupply";
 import { WalletBalance } from "@/components/WalletBalance";
 import { Card } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -12,7 +11,6 @@ import { TokenAggregateSupply } from "@/components/TokenAggregateSupply";
 import { useStartIndexer } from "@/hooks/useIndexer";
 import { Button } from "@/components/ui/button";
 import { RecentActivity } from "@/components/RecentActivity";
-import { useAccount } from "wagmi";
 
 const IndexerStarter = () => {
   const indexer = useStartIndexer();
