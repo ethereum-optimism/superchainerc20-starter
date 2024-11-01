@@ -23,7 +23,10 @@
     - [Deploying to single chain](#deploying-to-single-chain)
     - [Best practices for deploying SuperchainERC20](#best-practices-for-deploying-superchainerc20)
       - [Use Create2 to deploy SuperchainERC20](#use-create2-to-deploy-superchainerc20)
-    - [(TODO) Add example of how to bridge a deployed token to another chain](#todo-add-example-of-how-to-bridge-a-deployed-token-to-another-chain)
+      - [`crossChainMint` and `crosschainBurn` permissions](#crosschainmint-and-crosschainburn-permissions)
+  - [How to bridge a SuperchainERC20 token to another chain](#how-to-bridge-a-superchainerc20-token-to-another-chain)
+  - [Contributing](#contributing)
+  - [License](#license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -174,6 +177,70 @@ pnpm contracts:deploy:singlechain
 
 For best security practices `SuperchainERC20Bridge` should be the only contract with permission to call `crosschainMint` and `crosschainBurn`. These permissions are set up by default when using the `SuperchainERC20` contract.
 
-### (TODO) Add example of how to bridge a deployed token to another chain
+## How to bridge a SuperchainERC20 token to another chain
 
-Interop is not 
+**Note**: Interop is currently in active development and not yet ready for production use. This example uses [supersim](https://github.com/ethereum-optimism/supersim) in order to demonstrate how cross-chain transfers will work once interop is live.
+
+**Note**: this example uses a pre-funded test account provided by anvil for all transactions and as the owner of the `L2NativeSuperchainERC20`. The address of this account is `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266` and private key is `0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80`
+
+**1. Follow the steps in the [Getting started](#getting-started) section.**
+
+After completing these steps, you will have the following set up:
+- `supersim` running in autorelay mode with two L2 chains
+- The `L2NativeSuperchainERC20` token deployed on both chains
+
+**2. Find the address where the L2NativeSuperchainERC20 token was deployed.**
+
+Navigate to the `deploy-contracts` process in the terminal and look under the `== Logs ==` section to find the address where the `L2NativeSuperchainERC20` token is deployed.
+
+```sh
+# example
+== Logs ==
+  Deploying to chain:  op_chain_a
+  Deployed L2NativeSuperchainERC20 at address:  0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159 on chain id:  901
+  Deploying to chain:  op_chain_b
+  Deployed L2NativeSuperchainERC20 at address:  0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159 on chain id:  902
+```
+
+**3. Mint tokens to transfer on chain 901**
+
+The following command creates a transaction using `cast` to mint 1000 `L2NativeSuperchainERC20` tokens (deployed at `0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159`) to address `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`:
+
+```sh
+cast send 0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159 "mintTo(address _to, uint256 _amount)"  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 1000  --rpc-url http://127.0.0.1:9545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+```
+
+**4. Initiate the send transaction on chain 901**
+
+Send the tokens from Chain 901 to Chain 902 by calling `SendERC20` on the `SuperchainTokenBridge`. The `SuperchainTokenBridge` is an OP Stack predeploy and can be located at address `0x4200000000000000000000000000000000000028`. Here is a command that creates a transaction using `cast` that sends 1000 `L2NativeSuperchainERC20` tokens deployed at `0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159` to `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266` on chain id `902`:
+
+```sh
+cast send 0x4200000000000000000000000000000000000028 "sendERC20(address _token, address _to, uint256 _amount, uint256 _chainId)" 0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 1000 902 --rpc-url http://127.0.0.1:9545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+```
+
+**5. Wait for the relayed message to appear on chain 902** 
+
+In a few seconds, you should see the RelayedMessage on chain 902:
+
+```sh
+# example
+INFO [11-01|16:02:25.089] SuperchainTokenBridge#RelayERC20 token=0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159 from=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 to=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 amount=1000 source=901
+```
+
+**6. Check the balance on chain 902** 
+
+Verify that the balance of the `L2NativeSuperchainERC20` on chain 902 has increased:
+
+```sh
+cast balance --erc20 0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 --rpc-url http://127.0.0.1:9546
+```
+
+## Contributing
+
+Contributions are encouraged, but please open an issue before making any major changes to ensure your changes will be accepted.
+
+## License
+
+Files are licensed under the [MIT license](./LICENSE).
+
+<a href="./LICENSE"><img src="https://user-images.githubusercontent.com/35039927/231030761-66f5ce58-a4e9-4695-b1fe-255b1bceac92.png" alt="License information" width="200" /></a>
