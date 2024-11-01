@@ -4,7 +4,7 @@
 
 - [SuperchainERC20 Starter Kit](#superchainerc20-starter-kit)
   - [What is SuperchainERC20?](#what-is-superchainerc20)
-    - [`ICrosschainERC20`](#icrosschainerc20)
+    - [`IERC7802`](#ierc7802)
   - [Getting Started](#getting-started)
     - [1. Install prerequisites: `foundry`](#1-install-prerequisites-foundry)
     - [2. Clone the repository:](#2-clone-the-repository)
@@ -23,6 +23,7 @@
     - [Deploying to single chain](#deploying-to-single-chain)
     - [Best practices for deploying SuperchainERC20](#best-practices-for-deploying-superchainerc20)
       - [Use Create3 to deploy](#use-create3-to-deploy)
+    - [(TODO) Add example of how to bridge a deployed token to another chain](#todo-add-example-of-how-to-bridge-a-deployed-token-to-another-chain)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -32,13 +33,14 @@
 
 The full spec for the SuperchainERC20 standard can be found at: https://specs.optimism.io/interop/token-bridging.html#superchainerc20-standard. 
 
-The `SuperchainERC20` standard is a cross-chain-compatible ERC20 token design that ensures token fungibility across chains within the Superchain ecosystem. Built with interoperability in mind, `SuperchainERC20` tokens can be fungible across the Superchain using the `SuperchainERC20Bridge`.
+`SuperchainERC20` is an implementation of [ERC-7802](https://ethereum-magicians.org/t/erc-7802-crosschain-token-interface/21508) designed to enable asset interoperability in the Superchain.
+`SuperchainERC20` tokens are fungible across the Superchain by giving the `SuperchainERC20Bridge` permission to mint and burn the token during cross-chain transfers.
 
-**Notice**: ERC20s that do not use `SuperchainERC20Bridge` can still be fungible across the Superchain with interop message passing using a custom bridge and implementing `ICrosschainERC20`.
+**Note**: ERC20 tokens that do not utilize `SuperchainERC20` can still achieve fungibility across the Superchain through interop message passing with a custom bridge solution. For these custom tokens, implementing [ERC-7802](https://ethereum-magicians.org/t/erc-7802-crosschain-token-interface/21508) is strongly recommended, as it unifies cross-chain mint and burn interfaces, enabling tokens to benefit from a standardized approach to cross-chain transfers.
 
-### `ICrosschainERC20`
+### `IERC7802`
 
-To achieve cross-chain functionality, the `SuperchainERC20` standard incorporates the `ICrosschainERC20` interface, defining essential functions and events:
+To achieve cross-chain functionality, the `SuperchainERC20` standard incorporates the `IERC7802` interface, defining essential functions and events:
 
 - **`crosschainMint`**: Mints tokens on the destination chain as part of a cross-chain transfer.
 - **`crosschainBurn`**: Burns tokens on the source chain to facilitate the transfer.
@@ -171,3 +173,5 @@ pnpm contracts:deploy:singlechain
 [`Create3`](https://github.com/pcaversaccio/createx/blob/8c91357af5eb3454eb84103863d8a49a15613883/src/CreateX.sol#L630) ensures that the address is deterministically deterimined by the deployer address and the provided salt. Unlike `CREATE2` the address is not dependent on the init code of the contract, which makes it easy to ensure that the contract is deployed to the same address across all chains. This is crucial because in order for cross-chain transfers of `SuperchainERC20`s to work, the tokens must be deployed at the same address across all chains.
 
 The `CreateX` library used in this repository further strengthens deployment security with permissioned deploy protection (see [details here](https://github.com/pcaversaccio/createx/blob/058bc3b07e082711457d8ea20d8767a37a5a0021/src/CreateX.sol#L922)), which prevents unauthorized entities from deploying a contract at the same address. Only the original deployer using the same salt can deploy to that address, ensuring that your SuperchainERC20 token's address is uniquely tied to your deployment setup across chains.
+
+### (TODO) Add example of how to bridge a deployed token to another chain
