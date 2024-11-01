@@ -22,7 +22,7 @@
     - [Deploying to multiple chains](#deploying-to-multiple-chains)
     - [Deploying to single chain](#deploying-to-single-chain)
     - [Best practices for deploying SuperchainERC20](#best-practices-for-deploying-superchainerc20)
-      - [Use Create3 to deploy](#use-create3-to-deploy)
+      - [Use Create2 to deploy SuperchainERC20](#use-create2-to-deploy-superchainerc20)
     - [(TODO) Add example of how to bridge a deployed token to another chain](#todo-add-example-of-how-to-bridge-a-deployed-token-to-another-chain)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -109,7 +109,7 @@ The deployment configuration for token deployments is managed through the `deplo
 
 This section defines parameters for deploying token contracts across both single and multi-chain environments.
 
-- `salt`: A unique identifier used for deploying token contracts via [`Create3`](https://github.com/pcaversaccio/createx/blob/8c91357af5eb3454eb84103863d8a49a15613883/src/CreateX.sol#L630). This value ensures that contract deployments are deterministic.
+- `salt`: A unique identifier used for deploying token contracts via [`Create2`]. This value along with the contract bytecode and deployer ensures that contract deployments are deterministic.
     - example: `salt = "ethers phoenix"`
 
 #### `[token]`
@@ -144,7 +144,7 @@ This section contains configuration settings specific to multi-chain deployments
 
 Before proceeding with this section, ensure that your `deploy-config.toml` file is fully configured (see the [Deployment config](#deployment-config) section for more details on setup). Additionally, confirm that the `[rpc_endpoints]` section in `foundry.toml` is properly set up by following the instructions in [Configuring RPC urls](#configuring-rpc-urls).
 
-Multi-chain deployments are executed through the `MultiChainSuperchainERC20Deployment.s.sol` script. This script deploys tokens across each specified chain in the deployment configuration using [`Create3`](https://github.com/pcaversaccio/createx/blob/8c91357af5eb3454eb84103863d8a49a15613883/src/CreateX.sol#L630), ensuring deterministic contract addresses for each deployment. The script targets the `L2NativeSuperchainERC20.sol` contract by default. If you need to modify the token being deployed, either update this file directly or point the script to a custom token contract of your choice.
+Multi-chain deployments are executed through the `MultiChainSuperchainERC20Deployment.s.sol` script. This script deploys tokens across each specified chain in the deployment configuration using `Create2`, ensuring deterministic contract addresses for each deployment. The script targets the `L2NativeSuperchainERC20.sol` contract by default. If you need to modify the token being deployed, either update this file directly or point the script to a custom token contract of your choice.
 
 To execute a multi-chain deployment run:
 
@@ -157,7 +157,7 @@ pnpm contracts:deploy:multichain
 
 Before proceeding with this section, ensure that your `deploy-config.toml` file is fully configured (see the [Deployment config](#deployment-config) section for more details on setup). Additionally, confirm that the `[rpc_endpoints]` section in `foundry.toml` is properly set up by following the instructions in [Configuring RPC urls](#configuring-rpc-urls).
 
-A single chain deployment is executed through the `SingleChainSuperchainERC20Deployment.s.sol` script. This script deploys a token on the specified chain in the deployment configuration using [`Create3`](https://github.com/pcaversaccio/createx/blob/8c91357af5eb3454eb84103863d8a49a15613883/src/CreateX.sol#L630), ensuring deterministic contract addresses for the deployment. The script targets the `L2NativeSuperchainERC20.sol` contract by default. If you need to modify the token being deployed, either update this file directly or point the script to a custom token contract of your choice.
+A single chain deployment is executed through the `SingleChainSuperchainERC20Deployment.s.sol` script. This script deploys a token on the specified chain in the deployment configuration using `Create2`, ensuring deterministic contract addresses for the deployment. The script targets the `L2NativeSuperchainERC20.sol` contract by default. If you need to modify the token being deployed, either update this file directly or point the script to a custom token contract of your choice.
 
 To execute a single chain deployment run:
 
@@ -168,10 +168,8 @@ pnpm contracts:deploy:singlechain
 
 ### Best practices for deploying SuperchainERC20
 
-#### Use Create3 to deploy
+#### Use Create2 to deploy SuperchainERC20
 
-[`Create3`](https://github.com/pcaversaccio/createx/blob/8c91357af5eb3454eb84103863d8a49a15613883/src/CreateX.sol#L630) ensures that the address is deterministically deterimined by the deployer address and the provided salt. Unlike `CREATE2` the address is not dependent on the init code of the contract, which makes it easy to ensure that the contract is deployed to the same address across all chains. This is crucial because in order for cross-chain transfers of `SuperchainERC20`s to work, the tokens must be deployed at the same address across all chains.
-
-The `CreateX` library used in this repository further strengthens deployment security with permissioned deploy protection (see [details here](https://github.com/pcaversaccio/createx/blob/058bc3b07e082711457d8ea20d8767a37a5a0021/src/CreateX.sol#L922)), which prevents unauthorized entities from deploying a contract at the same address. Only the original deployer using the same salt can deploy to that address, ensuring that your SuperchainERC20 token's address is uniquely tied to your deployment setup across chains.
+`Create2` ensures that the address is deterministically deterimined by the deployer address, byte code of the contract, and the provided salt. This is crucial because in order for cross-chain transfers of `SuperchainERC20`s to work, the tokens must be deployed at the same address across all chains.
 
 ### (TODO) Add example of how to bridge a deployed token to another chain
