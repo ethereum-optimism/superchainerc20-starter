@@ -2,13 +2,7 @@
 pragma solidity ^0.8.25;
 
 import {console} from "forge-std/Script.sol";
-import {Vm} from "forge-std/Vm.sol";
-import {stdJson} from "forge-std/StdJson.sol";
-import {stdToml} from "forge-std/StdToml.sol";
 import {Script} from "forge-std/Script.sol";
-import {ICreateX} from "createx/ICreateX.sol";
-import {Preinstalls} from "@contracts-bedrock/libraries/Preinstalls.sol";
-import {L2NativeSuperchainERC20} from "../src/L2NativeSuperchainERC20.sol";
 import {SuperchainERC20Deployer} from "./SuperchainERC20Deployer.sol";
 
 contract MultiChainSuperchainERC20Deployment is Script, SuperchainERC20Deployer {
