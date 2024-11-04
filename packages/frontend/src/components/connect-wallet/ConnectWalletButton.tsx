@@ -1,9 +1,9 @@
 import { useAccount, useDisconnect } from 'wagmi'
 import * as React from 'react'
 import { Connector, useConnect } from 'wagmi'
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { WalletIcon } from "lucide-react"
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
+import { WalletIcon } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -11,10 +11,10 @@ import {
   DialogTitle,
   DialogTrigger,
   DialogDescription,
-} from "@/components/ui/dialog"
+} from '@/components/ui/dialog'
 
-import { Badge } from "@/components/ui/badge"
-import { ChevronRight, ArrowRight, Copy, Activity, Power } from "lucide-react"
+import { Badge } from '@/components/ui/badge'
+import { ChevronRight, ArrowRight, Copy, Activity, Power } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,8 +22,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { useToast } from "@/hooks/use-toast"
+} from '@/components/ui/dropdown-menu'
+import { useToast } from '@/hooks/use-toast'
 
 function WalletOptions() {
   const { connectors, connect } = useConnect()
@@ -33,7 +33,7 @@ function WalletOptions() {
       <DialogDescription className="text-muted-foreground">
         Choose your preferred wallet to connect.
       </DialogDescription>
-      
+
       <div className="grid gap-2">
         {connectors.map((connector) => (
           <WalletOption
@@ -104,7 +104,7 @@ export function Account() {
   const copyAddress = () => {
     navigator.clipboard.writeText(address || '')
     toast({
-      description: "Address copied to clipboard",
+      description: 'Address copied to clipboard',
       duration: 2000,
     })
   }
@@ -116,7 +116,11 @@ export function Account() {
           <div className="flex items-center gap-2">
             <div className="rounded-full p-1 bg-muted">
               {connector?.icon ? (
-                <img src={connector.icon} alt={connector.name} className="h-3 w-3" />
+                <img
+                  src={connector.icon}
+                  alt={connector.name}
+                  className="h-3 w-3"
+                />
               ) : (
                 <WalletIcon className="h-3 w-3" />
               )}
@@ -124,9 +128,7 @@ export function Account() {
             <span className="hidden sm:inline text-sm font-medium">
               {address?.slice(0, 6)}...{address?.slice(-4)}
             </span>
-            <span className="sm:hidden text-sm">
-              {address?.slice(0, 4)}...
-            </span>
+            <span className="sm:hidden text-sm">{address?.slice(0, 4)}...</span>
           </div>
           <ChevronRight className="h-4 w-4 text-muted-foreground" />
         </Button>
@@ -134,12 +136,15 @@ export function Account() {
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>{connector?.name || 'Wallet'}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={copyAddress} className="gap-2 cursor-pointer">
+        <DropdownMenuItem
+          onClick={copyAddress}
+          className="gap-2 cursor-pointer"
+        >
           <Copy className="h-4 w-4" />
           <span>Copy Address</span>
         </DropdownMenuItem>
-        <DropdownMenuItem 
-          onClick={() => disconnect()} 
+        <DropdownMenuItem
+          onClick={() => disconnect()}
           className="gap-2 text-destructive focus:text-destructive cursor-pointer"
         >
           <Power className="h-4 w-4" />
@@ -152,9 +157,9 @@ export function Account() {
 
 export const ConnectWalletButton = () => {
   const { isConnected } = useAccount()
-  
+
   if (isConnected) return <Account />
-  
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -167,7 +172,7 @@ export const ConnectWalletButton = () => {
         <DialogHeader>
           <DialogTitle>Connect Wallet</DialogTitle>
         </DialogHeader>
-        
+
         <WalletOptions />
       </DialogContent>
     </Dialog>

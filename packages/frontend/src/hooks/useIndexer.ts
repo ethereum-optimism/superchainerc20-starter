@@ -25,7 +25,7 @@ export function useStartIndexer() {
         createPublicClient({
           chain,
           transport: transports[chain.id],
-        }),
+        }) as ReturnType<typeof createPublicClient>,
       ]),
     )
 

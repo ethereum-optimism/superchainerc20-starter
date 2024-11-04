@@ -1,40 +1,14 @@
-import { L2NativeSuperchainERC20Abi } from "@/abi/L2NativeSuperchainERC20Abi";
-import { Card } from "@/components/ui/card";
-import { envVars } from "@/envVars";
-import {useReadContracts} from 'wagmi'
-import { Copy } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { L2NativeSuperchainERC20Abi } from '@/abi/L2NativeSuperchainERC20Abi'
+import { Card } from '@/components/ui/card'
+import { envVars } from '@/envVars'
+import { Copy } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { useToast } from '@/hooks/use-toast'
+import { useTokenInfo } from '@/hooks/useTokenInfo'
 
 const tokenContract = {
   address: envVars.VITE_TOKEN_CONTRACT_ADDRESS,
   abi: L2NativeSuperchainERC20Abi,
-}
-
-export const useTokenInfo = () => {
-  const result = useReadContracts({
-    contracts: [
-      {
-        ...tokenContract,
-        functionName: 'symbol',
-      },
-      {
-        ...tokenContract,
-        functionName: 'decimals',
-      },
-      {
-        ...tokenContract,
-        functionName: 'name',
-      },
-    ],
-  })
-  const [symbol, decimals, name] = result.data || []
-
-  return {
-    symbol: symbol?.result,
-    decimals: decimals?.result,
-    name: name?.result,
-  }
 }
 
 export function TokenInfo() {
@@ -43,7 +17,9 @@ export function TokenInfo() {
 
   return (
     <Card className="p-4">
-      <div className="text-sm font-medium text-muted-foreground">Token Info</div>
+      <div className="text-sm font-medium text-muted-foreground">
+        Token Info
+      </div>
       <div className="text-2xl font-bold">{symbol}</div>
       <div className="mt-2 space-y-1">
         <div className="flex items-center text-xs text-muted-foreground">
@@ -53,7 +29,9 @@ export function TokenInfo() {
         <div className="flex items-center text-xs text-muted-foreground">
           <span className="w-16">Address:</span>
           <div className="flex items-center gap-2">
-            <span className="font-medium font-mono truncate max-w-[200px]">{tokenContract.address}</span>
+            <span className="font-medium font-mono truncate max-w-[200px]">
+              {tokenContract.address}
+            </span>
             <Button
               variant="ghost"
               size="icon"
@@ -61,7 +39,7 @@ export function TokenInfo() {
               onClick={() => {
                 navigator.clipboard.writeText(tokenContract.address)
                 toast({
-                  description: "Address copied to clipboard",
+                  description: 'Address copied to clipboard',
                   duration: 2000,
                 })
               }}
@@ -76,5 +54,5 @@ export function TokenInfo() {
         </div>
       </div>
     </Card>
-  );
-} 
+  )
+}

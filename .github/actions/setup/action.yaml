@@ -1,0 +1,18 @@
+name: Setup
+runs:
+  using: composite
+  steps:
+    - uses: pnpm/action-setup@v2
+
+    - name: Setup Foundry
+      uses: foundry-rs/foundry-toolchain@v1
+      with:
+        version: nightly
+
+    - name: pnpm install node modules
+      run: pnpm i --frozen-lockfile
+      shell: bash
+
+    - name: pnpm build
+      run: pnpm -r build
+      shell: bash

@@ -1,10 +1,9 @@
-import { Card } from "@/components/ui/card"
-import { useIndexerStore } from "@/indexer/indexer"
-import { ArrowDownIcon, ArrowUpIcon } from "lucide-react"
-import { zeroAddress, formatUnits } from "viem"
-import { chains } from "@/config"
-import { useTokenInfo } from "./TokenInfo"
-
+import { Card } from '@/components/ui/card'
+import { useIndexerStore } from '@/indexer/indexer'
+import { ArrowDownIcon, ArrowUpIcon } from 'lucide-react'
+import { zeroAddress, formatUnits } from 'viem'
+import { chains } from '@/config'
+import { useTokenInfo } from '@/hooks/useTokenInfo'
 
 // Simple utility function
 const formatAddress = (address: string) => {
@@ -28,7 +27,7 @@ export const RecentActivity = () => {
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-lg font-semibold">Recent Activity</h2>
       </div>
-      
+
       {recentTransfers.length === 0 ? (
         <div className="text-sm text-muted-foreground">No recent activity</div>
       ) : (
@@ -52,10 +51,10 @@ export const RecentActivity = () => {
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium">
                       {transfer.from === zeroAddress
-                        ? "Mint"
+                        ? 'Mint'
                         : transfer.to === zeroAddress
-                        ? "Burn"
-                        : "Transfer"}
+                          ? 'Burn'
+                          : 'Transfer'}
                     </span>
                     <span className="text-sm font-medium">
                       {decimals && symbol
@@ -67,12 +66,13 @@ export const RecentActivity = () => {
                     {transfer.from === zeroAddress
                       ? `To: ${formatAddress(transfer.to)}`
                       : transfer.to === zeroAddress
-                      ? `From: ${formatAddress(transfer.from)}`
-                      : `${formatAddress(transfer.from)} → ${formatAddress(transfer.to)}`}
+                        ? `From: ${formatAddress(transfer.from)}`
+                        : `${formatAddress(transfer.from)} → ${formatAddress(transfer.to)}`}
                   </div>
                   <div className="text-xs text-muted-foreground">
-                    {chains.find(chain => chain.id === transfer.chainId)?.name || 'Unknown Chain'} • 
-                    Block #{transfer.blockNumber.toString()}
+                    {chains.find((chain) => chain.id === transfer.chainId)
+                      ?.name || 'Unknown Chain'}{' '}
+                    • Block #{transfer.blockNumber.toString()}
                   </div>
                 </div>
               </div>
