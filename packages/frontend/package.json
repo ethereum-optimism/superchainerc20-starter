@@ -8,7 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "shadcn:add": "pnpm dlx shadcn add"
+    "shadcn:add": "pnpm dlx shadcn add",
+    "init:env": "cp .env.example .env"
   },
   "dependencies": {
     "@eth-optimism/viem": "^0.0.11",

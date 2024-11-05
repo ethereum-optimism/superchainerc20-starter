@@ -1,50 +1,34 @@
-# React + TypeScript + Vite
+# SuperchainERC20 Dev Tools
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This frontend is a small tool to test SuperchainERC20 tokens locally.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🪙 Faucet UI to drip tokens
+- 🌉 Bridge UI to send tokens between chains
+- 📊 See recent token mint/burn/transfer activity
+- 💰 See total supply per chain
+- ℹ️ See token info
 
-## Expanding the ESLint configuration
+## Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+1. Set up environment variables:
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```sh
+pnpm init:env
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+2. Start the development server:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```sh
+pnpm dev
 ```
+
+Your app should now be running at http://localhost:5173
+
+## Built with
+
+- [Vite](https://vitejs.dev/) - Next Generation Frontend Tooling
+- [wagmi](https://wagmi.sh/) - React Hooks for Ethereum
+- [viem](https://viem.sh/) - TypeScript Interface for Ethereum
+- [@eth-optimism/viem](https://github.com/ethereum-optimism/op-viem) - Viem extensions for OP Stack interop
