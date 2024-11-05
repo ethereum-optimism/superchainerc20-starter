@@ -1,38 +1,43 @@
+# SuperchainERC20 Starter Kit
+
+<details>
+<summary><h2>📑 Table of Contents</h2></summary>
+
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
-
-- [SuperchainERC20 Starter Kit](#superchainerc20-starter-kit)
-  - [What is SuperchainERC20?](#what-is-superchainerc20)
-    - [`IERC7802`](#ierc7802)
-  - [Getting Started](#getting-started)
-    - [1. Install prerequisites: `foundry`](#1-install-prerequisites-foundry)
-    - [2. Clone and navigate to the repository:](#2-clone-and-navigate-to-the-repository)
-    - [3. Install project dependencies using pnpm:](#3-install-project-dependencies-using-pnpm)
-    - [4. Install smart contracts dependencies:](#4-install-smart-contracts-dependencies)
-    - [5. Start the development environment:](#5-start-the-development-environment)
-  - [Deploying SuperchainERC20s](#deploying-superchainerc20s)
-    - [Configuring RPC urls](#configuring-rpc-urls)
-    - [Deployment config](#deployment-config)
-      - [`[deploy-config]`](#deploy-config)
-      - [`[token]`](#token)
-      - [`[single_chain_deploy_config]`](#single_chain_deploy_config)
-      - [`[multi_chain_deploy_config]`](#multi_chain_deploy_config)
-    - [Deploying to multiple chains](#deploying-to-multiple-chains)
-    - [Deploying to single chain](#deploying-to-single-chain)
-    - [Best practices for deploying SuperchainERC20](#best-practices-for-deploying-superchainerc20)
-      - [Use Create2 to deploy SuperchainERC20](#use-create2-to-deploy-superchainerc20)
-      - [`crossChainMint` and `crosschainBurn` permissions](#crosschainmint-and-crosschainburn-permissions)
-  - [How to bridge a SuperchainERC20 token to another chain](#how-to-bridge-a-superchainerc20-token-to-another-chain)
-  - [Contributing](#contributing)
-  - [License](#license)
+- [🤔 What is SuperchainERC20?](#-what-is-superchainerc20)
+  - [`IERC7802`](#ierc7802)
+- [🚀 Getting Started](#-getting-started)
+  - [1. Install prerequisites: `foundry`](#1-install-prerequisites-foundry)
+  - [2. Clone and navigate to the repository:](#2-clone-and-navigate-to-the-repository)
+  - [3. Install project dependencies using pnpm:](#3-install-project-dependencies-using-pnpm)
+  - [4. Initialize .env files:](#4-initialize-env-files)
+  - [5. Start the development environment:](#5-start-the-development-environment)
+- [📦 Deploying SuperchainERC20s](#-deploying-superchainerc20s)
+  - [Configuring RPC urls](#configuring-rpc-urls)
+  - [Deployment config](#deployment-config)
+    - [`[deploy-config]`](#deploy-config)
+    - [`[token]`](#token)
+    - [`[single_chain_deploy_config]`](#single_chain_deploy_config)
+    - [`[multi_chain_deploy_config]`](#multi_chain_deploy_config)
+  - [Deploying to multiple chains](#deploying-to-multiple-chains)
+  - [Deploying to single chain](#deploying-to-single-chain)
+  - [Best practices for deploying SuperchainERC20](#best-practices-for-deploying-superchainerc20)
+    - [Use Create2 to deploy SuperchainERC20](#use-create2-to-deploy-superchainerc20)
+    - [`crosschainMint` and `crosschainBurn` permissions](#crosschainmint-and-crosschainburn-permissions)
+- [🧪 E2E Tests](#-e2e-tests)
+  - [Prerequisites](#prerequisites)
+  - [Running the Tests](#running-the-tests)
+- [🌉 Example: How to bridge a SuperchainERC20 token to another chain](#-example-how-to-bridge-a-superchainerc20-token-to-another-chain)
+- [🤝 Contributing](#-contributing)
+- [⚖️ License](#-license)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
-# SuperchainERC20 Starter Kit
+</details>
 
-## What is SuperchainERC20?
+## 🤔 What is SuperchainERC20?
 
 `SuperchainERC20` is an implementation of [ERC-7802](https://ethereum-magicians.org/t/erc-7802-crosschain-token-interface/21508) designed to enable asset interoperability in the Superchain.
 `SuperchainERC20` tokens are fungible across the Superchain by giving the `SuperchainERC20Bridge` permission to mint and burn the token during cross-chain transfers. For more information on SuperchainERC20 please visit the [docs](https://docs.optimism.io/stack/interop/superchain-erc20).
@@ -47,7 +52,7 @@ To achieve cross-chain functionality, the `SuperchainERC20` standard incorporate
 - **`crosschainBurn`**: Burns tokens on the source chain to facilitate the transfer.
 - **Events (`CrosschainMint` and `CrosschainBurn`)**: Emit when tokens are minted or burned, enabling transparent tracking of cross-chain transactions.
 
-## Getting Started
+## 🚀 Getting Started
 
 ### 1. Install prerequisites: `foundry`
 
@@ -86,7 +91,7 @@ This command will:
 pnpm dev
 ```
 
-## Deploying SuperchainERC20s
+## 📦 Deploying SuperchainERC20s
 
 ### Configuring RPC urls
 
@@ -169,11 +174,30 @@ pnpm contracts:deploy:singlechain
 
 `Create2` ensures that the address is deterministically deterimined by the bytecode of the contract and the provided salt. This is crucial because in order for cross-chain transfers of `SuperchainERC20`s to work with interop, the tokens must be deployed at the same address across all chains.
 
-#### `crossChainMint` and `crosschainBurn` permissions
+#### `crosschainMint` and `crosschainBurn` permissions
 
 For best security practices `SuperchainERC20Bridge` should be the only contract with permission to call `crosschainMint` and `crosschainBurn`. These permissions are set up by default when using the `SuperchainERC20` contract.
 
-## How to bridge a SuperchainERC20 token to another chain
+## 🧪 E2E Tests
+
+The `packages/e2e-test` directory contains simple end-to-end integration tests using `vitest` that run against `supersim`
+
+### Prerequisites
+
+Before running the tests, ensure you have:
+
+1. Completed all steps in the [Getting Started](#-getting-started) section
+2. Initialized your environment variables (`pnpm init:env`)
+
+### Running the Tests
+
+```sh
+pnpm e2e-test
+```
+
+The tests will run against your local supersim instance.
+
+## 🌉 Example: How to bridge a SuperchainERC20 token to another chain
 
 **Note**: Interop is currently in active development and not yet ready for production use. This example uses [supersim](https://github.com/ethereum-optimism/supersim) in order to demonstrate how cross-chain transfers will work once interop is live.
 
@@ -232,11 +256,11 @@ Verify that the balance of the `L2NativeSuperchainERC20` on chain 902 has increa
 cast balance --erc20 0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 --rpc-url http://127.0.0.1:9546
 ```
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are encouraged, but please open an issue before making any major changes to ensure your changes will be accepted.
 
-## License
+## ⚖️ License
 
 Files are licensed under the [MIT license](./LICENSE).
 
