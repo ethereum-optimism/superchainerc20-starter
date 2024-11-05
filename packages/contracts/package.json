@@ -1,5 +1,6 @@
 {
   "name": "@superchainerc20-starter/contracts",
+  "main": "index.js",
   "scripts": {
     "deploy:dev": "source .env && wait-port  http://:8420/ready && forge script scripts/SuperchainERC20Deployer.s.sol --broadcast --private-key $DEPLOYER_PRIVATE_KEY",
     "deploy:token": "source .env && forge script scripts/SuperchainERC20Deployer.s.sol --broadcast --private-key $DEPLOYER_PRIVATE_KEY",
@@ -9,5 +10,7 @@
     "test": "forge test",
     "init:env": "cp .env.example .env"
   },
-  "devDependencies": {}
+  "dependencies": {
+    "viem": "^2.21.37"
+  }
 }
