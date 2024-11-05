@@ -7,7 +7,8 @@
     "update:rpcs": "cd ../.. && ./scripts/fetch-superchain-rpc-urls.sh",
     "install": "forge install",
     "build": "forge build",
-    "test": "forge test"
+    "test": "forge test",
+    "init:env": "cp .env.example .env"
   },
   "devDependencies": {}
 }

@@ -8,7 +8,8 @@
     "contracts:deploy:multichain": "pnpm nx run @superchainerc20-starter/contracts:deploy:multichain",
     "contracts:deploy:singlechain": "pnpm nx run @superchainerc20-starter/contracts:deploy:singlechain",
     "update:toc": "doctoc README.md",
-    "e2e-test": "mprocs -c mprocs-e2e-test.yaml"
+    "e2e-test": "mprocs -c mprocs-e2e-test.yaml",
+    "init:env": "pnpm nx run-many --target=init:env"
   },
   "license": "MIT",
   "devDependencies": {

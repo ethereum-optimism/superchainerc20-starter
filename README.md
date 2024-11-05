@@ -1,17 +1,17 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
+**Table of Contents** _generated with [DocToc](https://github.com/thlorenz/doctoc)_
 
 - [SuperchainERC20 Starter Kit](#superchainerc20-starter-kit)
   - [What is SuperchainERC20?](#what-is-superchainerc20)
     - [`IERC7802`](#ierc7802)
   - [Getting Started](#getting-started)
     - [1. Install prerequisites: `foundry`](#1-install-prerequisites-foundry)
-    - [2. Clone the repository:](#2-clone-the-repository)
-    - [3. Navigate to the project directory:](#3-navigate-to-the-project-directory)
-    - [4. Install project dependencies using pnpm:](#4-install-project-dependencies-using-pnpm)
-    - [5. Install smart contracts dependencies:](#5-install-smart-contracts-dependencies)
-    - [6. Start the development environment:](#6-start-the-development-environment)
+    - [2. Clone and navigate to the repository:](#2-clone-and-navigate-to-the-repository)
+    - [3. Install project dependencies using pnpm:](#3-install-project-dependencies-using-pnpm)
+    - [4. Install smart contracts dependencies:](#4-install-smart-contracts-dependencies)
+    - [5. Start the development environment:](#5-start-the-development-environment)
   - [Deploying SuperchainERC20s](#deploying-superchainerc20s)
     - [Configuring RPC urls](#configuring-rpc-urls)
     - [Deployment config](#deployment-config)
@@ -55,31 +55,26 @@ To achieve cross-chain functionality, the `SuperchainERC20` standard incorporate
 
 Follow [this guide](https://book.getfoundry.sh/getting-started/installation) to install Foundry.
 
-### 2. Clone the repository:
+### 2. Clone and navigate to the repository:
 
 ```sh
 git clone git@github.com:ethereum-optimism/superchainerc20-starter.git
-```
-
-### 3. Navigate to the project directory:
-
-```sh
 cd superchainerc20-starter
 ```
 
-### 4. Install project dependencies using pnpm:
+### 3. Install project dependencies using pnpm:
 
 ```sh
 pnpm i
 ```
 
-### 5. Install smart contracts dependencies:
+### 4. Initialize .env files:
 
 ```sh
-pnpm install:contracts
+pnpm init:env
 ```
 
-### 6. Start the development environment:
+### 5. Start the development environment:
 
 This command will:
 
@@ -98,6 +93,7 @@ pnpm dev
 This repository includes a script to automatically fetch the public RPC URLs for each chain listed in the [Superchain Registry](https://github.com/ethereum-optimism/superchain-registry/blob/main/chainList.json) and add them to the `[rpc_endpoints]` configuration section of `foundry.toml`.
 
 The script ensures that only new RPC URLs are appended, preserving any URLs already present in `foundry.toml`. To execute this script, run:
+
 ```sh
 pnpm contracts:update:rpcs
 ```
@@ -111,21 +107,21 @@ The deployment configuration for token deployments is managed through the `deplo
 This section defines parameters for deploying token contracts across both single and multi-chain environments.
 
 - `salt`: A unique identifier used for deploying token contracts via [`Create2`]. This value along with the contract bytecode ensures that contract deployments are deterministic.
-    - example: `salt = "ethers phoenix"`
+  - example: `salt = "ethers phoenix"`
 
 #### `[token]`
 
 Deployment configuration for the token that will be deployed.
 
 - `owner_address`: the address designated as the owner of the token.
-    - The `L2NativeSuperchainERC20.sol` contract included in this repo extends the [`Ownable`](https://github.com/Vectorized/solady/blob/c3b2ffb4a3334ea519555c5ea11fb0e666f8c2bc/src/auth/Ownable.sol) contract
-    - example: `owner_address = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"`
+  - The `L2NativeSuperchainERC20.sol` contract included in this repo extends the [`Ownable`](https://github.com/Vectorized/solady/blob/c3b2ffb4a3334ea519555c5ea11fb0e666f8c2bc/src/auth/Ownable.sol) contract
+  - example: `owner_address = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"`
 - `name`: the token's name.
-    - example: `name = "TestSuperchainERC20"`
+  - example: `name = "TestSuperchainERC20"`
 - `symbol`: the token's symbol.
-    - example: `symbol = "TSU"`
+  - example: `symbol = "TSU"`
 - `decimals`: the number of decimal places the token supports.
-    - example: `decimals = 18`
+  - example: `decimals = 18`
 
 #### `[single_chain_deploy_config]`
 
@@ -186,6 +182,7 @@ For best security practices `SuperchainERC20Bridge` should be the only contract 
 **1. Follow the steps in the [Getting started](#getting-started) section.**
 
 After completing these steps, you will have the following set up:
+
 - `supersim` running in autorelay mode with two L2 chains
 - The `L2NativeSuperchainERC20` token deployed on both chains
 
@@ -218,7 +215,7 @@ Send the tokens from Chain 901 to Chain 902 by calling `SendERC20` on the `Super
 cast send 0x4200000000000000000000000000000000000028 "sendERC20(address _token, address _to, uint256 _amount, uint256 _chainId)" 0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 1000 902 --rpc-url http://127.0.0.1:9545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
 ```
 
-**5. Wait for the relayed message to appear on chain 902** 
+**5. Wait for the relayed message to appear on chain 902**
 
 In a few seconds, you should see the RelayedMessage on chain 902:
 
@@ -227,7 +224,7 @@ In a few seconds, you should see the RelayedMessage on chain 902:
 INFO [11-01|16:02:25.089] SuperchainTokenBridge#RelayERC20 token=0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159 from=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 to=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 amount=1000 source=901
 ```
 
-**6. Check the balance on chain 902** 
+**6. Check the balance on chain 902**
 
 Verify that the balance of the `L2NativeSuperchainERC20` on chain 902 has increased:
 
