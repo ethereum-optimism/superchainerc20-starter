@@ -4,3 +4,6 @@
 [submodule "packages/contracts/lib/optimism"]
 	path = packages/contracts/lib/optimism
 	url = https://github.com/ethereum-optimism/optimism
+[submodule "packages/contracts/lib/createx"]
+	path = packages/contracts/lib/createx
+	url = https://github.com/pcaversaccio/createx
