@@ -11,7 +11,6 @@ import {
 import {
   createInteropSentL2ToL2Messages,
   decodeRelayedL2ToL2Messages,
-  supersimL2B,
 } from '@eth-optimism/viem'
 
 const testPrivateKey = generatePrivateKey()
@@ -25,7 +24,7 @@ const l2NativeSuperchainERC20Contract = {
   abi: L2NativeSuperchainERC20Abi,
 } as const
 
-describe('L2 to L2 bridge', async () => {
+describe('bridge token from L2 to L2', async () => {
   const decimals = await testClientByChain.supersimL2A.readContract({
     ...l2NativeSuperchainERC20Contract,
     functionName: 'decimals',
@@ -62,11 +61,19 @@ describe('L2 to L2 bridge', async () => {
     )
   })
 
-  it(
-    'should bridge tokens from L2A to L2B',
-    async () => {
-      // Get initial balance on destination chain (L2B)
-      const startingBalance = await testClientByChain.supersimL2B.readContract({
+  it.for([
+    {
+      source: testClientByChain.supersimL2A,
+      destination: testClientByChain.supersimL2B,
+    },
+    {
+      source: testClientByChain.supersimL2B,
+      destination: testClientByChain.supersimL2A,
+    },
+  ] as const)(
+    'should bridge tokens from $source.chain.id to $destination.chain.id',
+    async ({ source: sourceClient, destination: destinationClient }) => {
+      const startingDestinationBalance = await destinationClient.readContract({
         ...l2NativeSuperchainERC20Contract,
         functionName: 'balanceOf',
         args: [testAccount.address],
@@ -75,36 +82,35 @@ describe('L2 to L2 bridge', async () => {
       const amountToBridge = parseUnits('10', decimals)
 
       // Initiate bridge transfer of 10 tokens from L2A to L2B
-      const hash = await testClientByChain.supersimL2A.sendSupERC20({
+      const hash = await sourceClient.sendSupERC20({
         account: testAccount,
         tokenAddress: envVars.VITE_TOKEN_CONTRACT_ADDRESS,
         amount: amountToBridge,
-        chainId: supersimL2B.id,
+        chainId: destinationClient.chain.id,
         to: testAccount.address,
       })
 
-      const receipt =
-        await testClientByChain.supersimL2A.waitForTransactionReceipt({
-          hash,
-        })
+      const receipt = await sourceClient.waitForTransactionReceipt({
+        hash,
+      })
 
       // Extract the cross-chain message from the bridge transaction
       const { sentMessages } = await createInteropSentL2ToL2Messages(
-        testClientByChain.supersimL2A,
+        // @ts-expect-error
+        sourceClient,
         { receipt },
       )
       expect(sentMessages).toHaveLength(1)
 
       // Relay the message on the destination chain (L2B)
-      const relayMessageTxHash =
-        await testClientByChain.supersimL2B.relayL2ToL2Message({
-          account: testAccount,
-          sentMessageId: sentMessages[0].id,
-          sentMessagePayload: sentMessages[0].payload,
-        })
+      const relayMessageTxHash = await destinationClient.relayL2ToL2Message({
+        account: testAccount,
+        sentMessageId: sentMessages[0].id,
+        sentMessagePayload: sentMessages[0].payload,
+      })
 
       const relayMessageReceipt =
-        await testClientByChain.supersimL2B.waitForTransactionReceipt({
+        await destinationClient.waitForTransactionReceipt({
           hash: relayMessageTxHash,
         })
 
@@ -115,14 +121,42 @@ describe('L2 to L2 bridge', async () => {
       expect(successfulMessages).length(1)
 
       // Verify the balance increased by 10 tokens on L2B
-      const endingBalance = await testClientByChain.supersimL2B.readContract({
+      const endingBalance = await destinationClient.readContract({
         ...l2NativeSuperchainERC20Contract,
         functionName: 'balanceOf',
         args: [testAccount.address],
       })
 
-      expect(endingBalance).toEqual(startingBalance + amountToBridge)
+      expect(endingBalance).toEqual(startingDestinationBalance + amountToBridge)
     },
-    { timeout: 20000 },
+  )
+
+  it.for([
+    {
+      source: testClientByChain.supersimL2A,
+      destination: testClientByChain.supersimL2B,
+    },
+  ] as const)(
+    'should fail when trying to bridge more tokens than available balance',
+    async ({ source: sourceClient }) => {
+      const currentBalance = await sourceClient.readContract({
+        ...l2NativeSuperchainERC20Contract,
+        functionName: 'balanceOf',
+        args: [testAccount.address],
+      })
+
+      const excessiveAmount = currentBalance + parseUnits('1', decimals)
+
+      // Attempt to bridge more tokens than available
+      await expect(
+        sourceClient.sendSupERC20({
+          account: testAccount,
+          tokenAddress: envVars.VITE_TOKEN_CONTRACT_ADDRESS,
+          amount: excessiveAmount,
+          chainId: testClientByChain.supersimL2B.chain.id,
+          to: testAccount.address,
+        }),
+      ).rejects.toThrow(/reverted/i)
+    },
   )
 })
