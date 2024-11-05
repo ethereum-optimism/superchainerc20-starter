@@ -2,6 +2,8 @@
 
 This frontend is a small tool to test SuperchainERC20 tokens locally.
 
+![frontend-gif](https://github.com/user-attachments/assets/f7aef910-c9ef-4a9e-b94b-8626d8dea02b)
+
 ## Features
 
 - 🪙 Faucet UI to drip tokens
