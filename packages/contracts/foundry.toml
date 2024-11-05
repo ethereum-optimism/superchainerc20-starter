@@ -12,6 +12,7 @@ libs = ["lib"]
 
 fs_permissions = [
   { access='read', path='./configs' },
+  { access='read', path='./test' },
 ]
 
 remappings = [

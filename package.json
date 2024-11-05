@@ -10,7 +10,7 @@
     "update:toc": "doctoc README.md",
     "e2e-test": "mprocs -c mprocs-e2e-test.yaml",
     "init:env": "pnpm nx run-many --target=init:env",
-    "deploy:contracts:ci": "wait-port http://:8420/ready && cd packages/contracts && forge install && forge script scripts/SuperchainERC20Deployer.s.sol --broadcast --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
+    "deploy:contracts:ci": "wait-port http://:8420/ready && cd packages/contracts && forge install && DEPLOY_CONFIG_PATH=/test/configs/test-deploy-config.toml forge script scripts/SuperchainERC20Deployer.s.sol --broadcast --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
     "e2e-test:ci": "pnpm nx run @superchainerc20-starter/e2e-test:test"
   },
   "license": "MIT",
