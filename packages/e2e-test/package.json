@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "init:env": "cp .env.example .env"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",

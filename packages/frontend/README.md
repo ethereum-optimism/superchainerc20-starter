@@ -30,7 +30,7 @@ Your app should now be running at http://localhost:5173
 
 ## Built with
 
-- [Vite](https://vitejs.dev/) - Next Generation Frontend Tooling
-- [wagmi](https://wagmi.sh/) - React Hooks for Ethereum
-- [viem](https://viem.sh/) - TypeScript Interface for Ethereum
+- [vite](https://vitejs.dev/)
+- [wagmi](https://wagmi.sh/)
+- [viem](https://viem.sh/)
 - [@eth-optimism/viem](https://github.com/ethereum-optimism/op-viem) - Viem extensions for OP Stack interop
