@@ -1,17 +1,54 @@
-## Foundry
+# Contracts
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+## Overview
 
-Foundry consists of:
+This repository contains contracts and tooling for deploying and managing SuperchainERC20 tokens.
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+## Contracts
 
-## Documentation
+### src/
 
-https://book.getfoundry.sh/
+- `L2NativeSuperchainERC20.sol` - An simple SuperchainERC20 implementation that allows the owner to mint new tokens.
+
+## Tests
+
+### test/
+
+- `L2NativeSuperchainERC20.t.sol` - Tests for the L2NativeSuperchainERC20 contract, covering basic ERC20 functionality, minting, ownership, and transfers.
+
+- `SuperchainERC20.t.sol` - Tests for cross-chain functionality including cross-chain minting and burning operations.
+
+  - If you implement your own custom SuperchainERC20 token, make sure to run these unit tests against it to confirm that it works correctly with the [SuperchainERC20Bridge](https://specs.optimism.io/interop/predeploys.html#superchainerc20bridge)
+
+  ```diff
+  // Example of updating SuperchainERC20Test to use your custom token implementation:
+  contract SuperchainERC20Test is Test {
+      address internal constant ZERO_ADDRESS = address(0);
+      address internal constant SUPERCHAIN_TOKEN_BRIDGE = Predeploys.SUPERCHAIN_TOKEN_BRIDGE;
+      address internal constant MESSENGER = Predeploys.L2_TO_L2_CROSS_DOMAIN_MESSENGER;
+
+  -   SuperchainERC20 public superchainERC20;
+  +   MyCustomSuperchainERC20 public superchainERC20;
+
+      /// @notice Sets up the test suite.
+      function setUp() public {
+  -       superchainERC20 = new L2NativeSuperchainERC20(address(this), "Test", "TEST", 18);
+  +       superchainERC20 = new MyCustomSuperchainERC20();
+      }
+  ...
+  ```
+
+## Scripts
+
+### scripts/
+
+- `MultiChainSuperchainERC20Deployment.s.sol` - Script for deploying the L2NativeSuperchainERC20 token to multiple chains in sequence, reading chain configuration from TOML.
+- `SingleChainSuperchainERC20Deployment.s.sol` - Script for deploying the L2NativeSuperchainERC20 token to a single chain, reading chain configuration from TOML.
+- `SuperchainERC20Deployer.sol` - Base deployment logic used by both single and multi-chain deployment scripts.
+
+## Deploying
+
+For more information on how to deploy the token, check out [the deployment guide](../../README.md#-deploying-superchainerc20s).
 
 ## Usage
 
@@ -37,30 +74,4 @@ $ forge fmt
 
 ```shell
 $ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
 ```

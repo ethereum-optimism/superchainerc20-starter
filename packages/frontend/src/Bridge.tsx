@@ -64,14 +64,6 @@ export const Bridge = () => {
 
   const isButtonDisabled = !address || !amount || !sourceChain || !targetChain || isLoading
 
-  console.log({
-    address,
-    amount,
-    sourceChain,
-    targetChain,
-    isLoading,
-    isButtonDisabled,
-  })
   return (
     <div className="space-y-6">
       <div>
