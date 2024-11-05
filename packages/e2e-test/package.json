@@ -1,10 +1,10 @@
 {
-  "name": "e2e-test",
+  "name": "@superchainerc20-starter/e2e-test",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "test": "vitest",
+    "test": "vitest --run",
     "init:env": "cp .env.example .env"
   },
   "devDependencies": {

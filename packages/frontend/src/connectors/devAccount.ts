@@ -1,5 +1,5 @@
 import { createConnector, http } from 'wagmi'
-import { Account, Chain, createWalletClient, EIP1193Provider } from 'viem'
+import { Account, Chain, createWalletClient } from 'viem'
 
 const createProvider = (chain: Chain, account: Account) => {
   const accountClient = createWalletClient({
@@ -8,11 +8,14 @@ const createProvider = (chain: Chain, account: Account) => {
     transport: http(),
   })
 
-  const request = async ({ method, params }: any) => {
+  const request = async ({
+    method,
+    params,
+  }: Parameters<typeof accountClient.request>) => {
     return accountClient.request({ method, params })
   }
 
-  return { request } as EIP1193Provider
+  return { request }
 }
 
 // A connector that allows you to connect to a specific account on every chain
@@ -20,12 +23,15 @@ export const devAccount = (account: Account) => {
   return createConnector((config) => {
     let currentChain = config.chains[0]
 
-    let providerByChainId = new Map<number, EIP1193Provider>()
+    const providerByChainId = new Map<
+      number,
+      ReturnType<typeof createProvider>
+    >()
     config.chains.forEach((chain) => {
       providerByChainId.set(chain.id, createProvider(chain, account))
     })
 
-    let chainById = new Map<number, Chain>()
+    const chainById = new Map<number, Chain>()
     config.chains.forEach((chain) => {
       chainById.set(chain.id, chain)
     })

@@ -6,10 +6,12 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "lint": "eslint .",
+    "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
+    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn",
     "preview": "vite preview",
     "shadcn:add": "pnpm dlx shadcn add",
-    "init:env": "cp .env.example .env"
+    "init:env": "cp .env.example .env",
+    "typecheck": "tsc --build --noEmit"
   },
   "dependencies": {
     "@eth-optimism/viem": "^0.0.11",
