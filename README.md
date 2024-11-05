@@ -19,10 +19,7 @@
   - [Deployment config](#deployment-config)
     - [`[deploy-config]`](#deploy-config)
     - [`[token]`](#token)
-    - [`[single_chain_deploy_config]`](#single_chain_deploy_config)
-    - [`[multi_chain_deploy_config]`](#multi_chain_deploy_config)
-  - [Deploying to multiple chains](#deploying-to-multiple-chains)
-  - [Deploying to single chain](#deploying-to-single-chain)
+  - [Deploying a token](#deploying-a-token)
   - [Best practices for deploying SuperchainERC20](#best-practices-for-deploying-superchainerc20)
     - [Use Create2 to deploy SuperchainERC20](#use-create2-to-deploy-superchainerc20)
     - [`crosschainMint` and `crosschainBurn` permissions](#crosschainmint-and-crosschainburn-permissions)
@@ -105,14 +102,16 @@ pnpm contracts:update:rpcs
 
 ### Deployment config
 
-The deployment configuration for token deployments is managed through the `deploy-config.toml` file. The options available in this file allow you to customize both single and multi-chain deployments. Below is a detailed breakdown of each configuration section:
+The deployment configuration for token deployments is managed through the `deploy-config.toml` file. Below is a detailed breakdown of each configuration section:
 
 #### `[deploy-config]`
 
-This section defines parameters for deploying token contracts across both single and multi-chain environments.
+This section defines parameters for deploying token contracts.
 
 - `salt`: A unique identifier used for deploying token contracts via [`Create2`]. This value along with the contract bytecode ensures that contract deployments are deterministic.
   - example: `salt = "ethers phoenix"`
+- `chains`: Lists the chains where the token will be deployed. Each chain must correspond to an entry in the `[rpc_endpoints]` section of `foundry.toml`.
+  - example: `chains = ["op_chain_a","op_chain_b"]`
 
 #### `[token]`
 
@@ -128,43 +127,16 @@ Deployment configuration for the token that will be deployed.
 - `decimals`: the number of decimal places the token supports.
   - example: `decimals = 18`
 
-#### `[single_chain_deploy_config]`
-
-This section contains configuration settings specific to single chain deployments via the `SingleChainSuperchainERC20Deployment.s.sol` script.
-
-- `chain`: specifies the chain where the token will be deployed. This value must correspond to a chain in the `[rpc_endpoints]` section of `foundry.toml`.
-  - example: `chain = "op/mainnet"`
-
-#### `[multi_chain_deploy_config]`
-
-This section contains configuration settings specific to multi-chain deployments via the `MultiChainSuperchainERC20Deployment.s.sol` script.
-
-- `chains`: Lists the chains where the token will be deployed. Each chain must correspond to an entry in the `[rpc_endpoints]` section of `foundry.toml`.
-  - example: `chains = ["op_chain_a","op_chain_b"]`
-
-### Deploying to multiple chains
+### Deploying a token
 
 Before proceeding with this section, ensure that your `deploy-config.toml` file is fully configured (see the [Deployment config](#deployment-config) section for more details on setup). Additionally, confirm that the `[rpc_endpoints]` section in `foundry.toml` is properly set up by following the instructions in [Configuring RPC urls](#configuring-rpc-urls).
 
-Multi-chain deployments are executed through the `MultiChainSuperchainERC20Deployment.s.sol` script. This script deploys tokens across each specified chain in the deployment configuration using `Create2`, ensuring deterministic contract addresses for each deployment. The script targets the `L2NativeSuperchainERC20.sol` contract by default. If you need to modify the token being deployed, either update this file directly or point the script to a custom token contract of your choice.
+Deployments are executed through the `SuperchainERC20Deployer.s.sol` script. This script deploys tokens across each specified chain in the deployment configuration using `Create2`, ensuring deterministic contract addresses for each deployment. The script targets the `L2NativeSuperchainERC20.sol` contract by default. If you need to modify the token being deployed, either update this file directly or point the script to a custom token contract of your choice.
 
-To execute a multi-chain deployment run:
-
-```sh
-pnpm contracts:deploy:multichain
-
-```
-
-### Deploying to single chain
-
-Before proceeding with this section, ensure that your `deploy-config.toml` file is fully configured (see the [Deployment config](#deployment-config) section for more details on setup). Additionally, confirm that the `[rpc_endpoints]` section in `foundry.toml` is properly set up by following the instructions in [Configuring RPC urls](#configuring-rpc-urls).
-
-A single chain deployment is executed through the `SingleChainSuperchainERC20Deployment.s.sol` script. This script deploys a token on the specified chain in the deployment configuration using `Create2`, ensuring deterministic contract addresses for the deployment. The script targets the `L2NativeSuperchainERC20.sol` contract by default. If you need to modify the token being deployed, either update this file directly or point the script to a custom token contract of your choice.
-
-To execute a single chain deployment run:
+To execute a token deployment run:
 
 ```sh
-pnpm contracts:deploy:singlechain
+pnpm contracts:deploy:token
 
 ```
 
