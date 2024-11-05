@@ -1,10 +1,5 @@
 [deploy_config]
 salt = "ethers phoenix"
-
-[single_chain_deploy_config]
-chain = "op_chain_a"
-
-[multi_chain_deploy_config]
 chains = ["op_chain_a","op_chain_b"]
 
 [token]

@@ -42,9 +42,7 @@ This repository contains contracts and tooling for deploying and managing Superc
 
 ### scripts/
 
-- `MultiChainSuperchainERC20Deployment.s.sol` - Script for deploying the L2NativeSuperchainERC20 token to multiple chains in sequence, reading chain configuration from TOML.
-- `SingleChainSuperchainERC20Deployment.s.sol` - Script for deploying the L2NativeSuperchainERC20 token to a single chain, reading chain configuration from TOML.
-- `SuperchainERC20Deployer.sol` - Base deployment logic used by both single and multi-chain deployment scripts.
+- `SuperchainERC20Deployer.s.sol` - Script for deploying the L2NativeSuperchainERC20 token to the configured chains in sequence, reading chain configuration from TOML.
 
 ## Deploying
 
