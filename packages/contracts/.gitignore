@@ -10,3 +10,5 @@ docs/
 
 # Dotenv file
 .env
+
+deployment.json
