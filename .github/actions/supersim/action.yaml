@@ -1,8 +1,0 @@
-name: Supersim
-runs:
-  using: composite
-  steps:
-    - name: Install Supersim
-      uses: jaxxstorm/action-install-gh-release@v1.10.0
-      with:
-        repo: ethereum-optimism/supersim

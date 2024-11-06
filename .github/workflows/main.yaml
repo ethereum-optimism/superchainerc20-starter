@@ -56,8 +56,6 @@ jobs:
           fetch-depth: 0
       - name: Setup
         uses: ./.github/actions/setup
-      - name: Supersim Setup
-        uses: ./.github/actions/supersim
       - name: Run Tests
         run: |
           pnpm -r --filter '!e2e-test' test
@@ -71,8 +69,6 @@ jobs:
           fetch-depth: 0
       - name: Setup
         uses: ./.github/actions/setup
-      - name: Supersim Setup
-        uses: ./.github/actions/supersim
       - name: Run Tests
         shell: bash
         run: |
