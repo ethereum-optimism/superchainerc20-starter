@@ -182,33 +182,32 @@ After completing these steps, you will have the following set up:
 - `supersim` running in autorelay mode with two L2 chains
 - The `L2NativeSuperchainERC20` token deployed on both chains
 
-**2. Find the address where the L2NativeSuperchainERC20 token was deployed.**
+**2. Find the address and owner of the L2NativeSuperchainERC20 token was deployed.**
 
-Navigate to the `deploy-contracts` process in the terminal and look under the `== Logs ==` section to find the address where the `L2NativeSuperchainERC20` token is deployed.
+The address that the token in step 1 was deployed to and the address of the owner of the token can be found in the [deployment.json](packages/contracts/deployment.json) file under the `"deployedAddress"` and `"ownerAddress"` fields. The `deployedAddress` address will be used for any token interactions in the next steps and the private key of the `ownerAddress` will need to be used for step 3 since minting requires owner privileges. In this example `deployment.json` file the token in step 1 was deployed at `0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159` and the owner address is `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`:
 
 ```sh
 # example
-== Logs ==
-  Deploying to chain:  op_chain_a
-  Deployed L2NativeSuperchainERC20 at address:  0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159 on chain id:  901
-  Deploying to chain:  op_chain_b
-  Deployed L2NativeSuperchainERC20 at address:  0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159 on chain id:  902
+{
+  "deployedAddress": "0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159",
+  "ownerAddress": "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
+}
 ```
 
 **3. Mint tokens to transfer on chain 901**
 
-The following command creates a transaction using `cast` to mint 1000 `L2NativeSuperchainERC20` tokens (deployed at `0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159`) to address `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`:
+The following command creates a transaction using `cast` to mint 1000 `L2NativeSuperchainERC20` tokens. Replace `<deployed-token-address>` with the `deployedAddress` from [deployment.json](packages/contracts/deployment.json), replace `<recipient-address>` with the address you would like to send the tokens to, and replace `<owner-address-private-key>` with the private key of the `ownerAddress` from step [deployment.json](packages/contracts/deployment.json).
 
 ```sh
-cast send 0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159 "mintTo(address _to, uint256 _amount)"  0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 1000  --rpc-url http://127.0.0.1:9545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+cast send <deployed-token-address> "mintTo(address _to, uint256 _amount)" <recipient-address> 1000  --rpc-url http://127.0.0.1:9545 --private-key <owner-address-private-key>
 ```
 
 **4. Initiate the send transaction on chain 901**
 
-Send the tokens from Chain 901 to Chain 902 by calling `SendERC20` on the `SuperchainTokenBridge`. The `SuperchainTokenBridge` is an OP Stack predeploy and can be located at address `0x4200000000000000000000000000000000000028`. Here is a command that creates a transaction using `cast` that sends 1000 `L2NativeSuperchainERC20` tokens deployed at `0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159` to `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266` on chain id `902`:
+Send the tokens from Chain 901 to Chain 902 by calling `SendERC20` on the `SuperchainTokenBridge`. The `SuperchainTokenBridge` is an OP Stack predeploy and can be located at address `0x4200000000000000000000000000000000000028`. Replace `<deployed-token-address>` with the `deployedAddress` from [deployment.json](packages/contracts/deployment.json), replace `<recipient-address>` with the address you would like to send the tokens to, and replace `<token-sender-private-key>` with the private key of the recipient address from step 3.
 
 ```sh
-cast send 0x4200000000000000000000000000000000000028 "sendERC20(address _token, address _to, uint256 _amount, uint256 _chainId)" 0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 1000 902 --rpc-url http://127.0.0.1:9545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80
+cast send 0x4200000000000000000000000000000000000028 "sendERC20(address _token, address _to, uint256 _amount, uint256 _chainId)" <deployed-token-address> <recipient-address> 1000 902 --rpc-url http://127.0.0.1:9545 --private-key <token-sender-private-key>
 ```
 
 **5. Wait for the relayed message to appear on chain 902**
@@ -217,15 +216,15 @@ In a few seconds, you should see the RelayedMessage on chain 902:
 
 ```sh
 # example
-INFO [11-01|16:02:25.089] SuperchainTokenBridge#RelayERC20 token=0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159 from=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 to=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 amount=1000 source=901
+INFO [11-01|16:02:25.089] SuperchainTokenBridge#RelayERC20 token=0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159 from=0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 to=0x70997970C51812dc3A010C7d01b50e0d17dc79C8 amount=1000 source=901
 ```
 
 **6. Check the balance on chain 902**
 
-Verify that the balance of the `L2NativeSuperchainERC20` on chain 902 has increased:
+Verify that the balance for the recipient of the `L2NativeSuperchainERC20` on chain 902 has increased:
 
 ```sh
-cast balance --erc20 0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266 --rpc-url http://127.0.0.1:9546
+cast balance --erc20 <deployed-token-address> <recipient-address> --rpc-url http://127.0.0.1:9546
 ```
 
 ## 🤝 Contributing
