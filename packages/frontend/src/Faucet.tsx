@@ -3,15 +3,16 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Checkbox } from '@/components/ui/checkbox'
-import { config, defaultDevAccount } from '@/config'
+import { config } from '@/config'
 import { useAccount } from 'wagmi'
 import {
   Address,
-  createWalletClient,
   Hash,
   http,
   parseUnits,
   formatUnits,
+  createTestClient,
+  walletActions,
 } from 'viem'
 import { useTokenInfo } from '@/hooks/useTokenInfo'
 import { L2NativeSuperchainERC20Abi } from '@/abi/L2NativeSuperchainERC20Abi'
@@ -21,6 +22,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Loader2 } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { CheckCircle2, AlertCircle } from 'lucide-react'
+import { toAccount } from 'viem/accounts'
 
 const drip = async (
   recipient: Address,
@@ -31,13 +33,21 @@ const drip = async (
   const chain = config.chains.find((x) => x.id === chainId)
   if (!chain) throw new Error(`Chain with id ${chainId} not found`)
 
-  const walletClient = createWalletClient({
-    account: defaultDevAccount,
+  const minterAccount = toAccount(envVars.VITE_TOKEN_MINTER_ADDRESS)
+
+  const client = createTestClient({
     chain,
-    transport: http(chain.rpcUrls.default.http[0]),
+    transport: http(),
+    mode: 'anvil',
+    pollingInterval: 1000,
+  }).extend(walletActions)
+
+  await client.impersonateAccount({
+    address: envVars.VITE_TOKEN_MINTER_ADDRESS,
   })
 
-  const hash = await walletClient.writeContract({
+  const hash = await client.writeContract({
+    account: minterAccount,
     address: envVars.VITE_TOKEN_CONTRACT_ADDRESS,
     abi: L2NativeSuperchainERC20Abi,
     functionName: 'mintTo',
