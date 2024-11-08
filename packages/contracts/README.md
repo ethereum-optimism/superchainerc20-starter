@@ -8,7 +8,7 @@ This repository contains contracts and tooling for deploying and managing Superc
 
 ### src/
 
-- `L2NativeSuperchainERC20.sol` - An simple SuperchainERC20 implementation that allows the owner to mint new tokens.
+- `L2NativeSuperchainERC20.sol` - A simple SuperchainERC20 implementation that allows the owner to mint new tokens.
 
 ## Tests
 
