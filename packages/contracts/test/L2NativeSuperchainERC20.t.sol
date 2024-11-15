@@ -134,7 +134,7 @@ contract L2NativeSuperchainERC20Test is Test {
         assertEq(superchainERC20.balanceOf(alice), _amount);
     }
 
-    /// @notice tests that an insufficent balance cannot be transferred.
+    /// @notice tests that an insufficient balance cannot be transferred.
     function testFuzz_transferInsufficientBalance_reverts(address _to, uint256 _mintAmount, uint256 _sendAmount)
         public
     {
@@ -148,7 +148,7 @@ contract L2NativeSuperchainERC20Test is Test {
         superchainERC20.transfer(_to, _sendAmount);
     }
 
-    /// @notice tests that an insufficent allowance cannot be transferred.
+    /// @notice tests that an insufficient allowance cannot be transferred.
     function testFuzz_transferFromInsufficientAllowance_reverts(
         address _to,
         address _from,

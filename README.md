@@ -144,7 +144,7 @@ pnpm contracts:deploy:token
 
 #### Use Create2 to deploy SuperchainERC20
 
-`Create2` ensures that the address is deterministically deterimined by the bytecode of the contract and the provided salt. This is crucial because in order for cross-chain transfers of `SuperchainERC20`s to work with interop, the tokens must be deployed at the same address across all chains.
+`Create2` ensures that the address is deterministically determined by the bytecode of the contract and the provided salt. This is crucial because in order for cross-chain transfers of `SuperchainERC20`s to work with interop, the tokens must be deployed at the same address across all chains.
 
 #### `crosschainMint` and `crosschainBurn` permissions
 
@@ -182,7 +182,7 @@ After completing these steps, you will have the following set up:
 - `supersim` running in autorelay mode with two L2 chains
 - The `L2NativeSuperchainERC20` token deployed on both chains
 
-**2. Find the address and owner of the L2NativeSuperchainERC20 token was deployed.**
+**2. Find the address and owner of the L2NativeSuperchainERC20 token that was deployed.**
 
 The address that the token in step 1 was deployed to and the address of the owner of the token can be found in the [deployment.json](packages/contracts/deployment.json) file under the `"deployedAddress"` and `"ownerAddress"` fields. The `deployedAddress` address will be used for any token interactions in the next steps and the private key of the `ownerAddress` will need to be used for step 3 since minting requires owner privileges. In this example `deployment.json` file the token in step 1 was deployed at `0x5BCf71Ca0CE963373d917031aAFDd6D98B80B159` and the owner address is `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`:
 
