@@ -2,8 +2,8 @@
   "name": "@superchainerc20-starter/contracts",
   "main": "index.js",
   "scripts": {
-    "deploy:dev": "source .env && wait-port  http://:8420/ready && forge script scripts/SuperchainERC20Deployer.s.sol --broadcast --private-key $DEPLOYER_PRIVATE_KEY",
-    "deploy:token": "source .env && forge script scripts/SuperchainERC20Deployer.s.sol --broadcast --private-key $DEPLOYER_PRIVATE_KEY",
+    "deploy:dev": "env-cmd -f .env cross-env-shell 'wait-port http://:8420/ready && forge script scripts/SuperchainERC20Deployer.s.sol --broadcast --private-key $DEPLOYER_PRIVATE_KEY'",
+    "deploy:token": "env-cmd -f .env cross-env-shell 'forge script scripts/SuperchainERC20Deployer.s.sol --broadcast --private-key $DEPLOYER_PRIVATE_KEY'",
     "update:rpcs": "cd ../.. && ./scripts/fetch-superchain-rpc-urls.sh",
     "install": "forge install",
     "build": "forge build",
