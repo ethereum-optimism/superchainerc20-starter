@@ -69,9 +69,11 @@ jobs:
           fetch-depth: 0
       - name: Setup
         uses: ./.github/actions/setup
+      - name: Write DEPLOYER_PRIVATE_KEY to .env
+        run: echo "DEPLOYER_PRIVATE_KEY=${{ vars.DEPLOYER_PRIVATE_KEY }}" >> packages/contracts/.env
       - name: Run Tests
         shell: bash
         run: |
           pnpm supersim &
-          pnpm deploy:contracts:ci
+          pnpm contracts:deploy:dev
           pnpm e2e-test:ci

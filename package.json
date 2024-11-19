@@ -4,18 +4,20 @@
   "description": "",
   "scripts": {
     "dev": "mprocs",
-    "install:contracts": "cd packages/contracts && forge install",
+    "install:contracts": "pnpm nx run @superchainerc20-starter/contracts:install",
     "contracts:update:rpcs": "pnpm nx run @superchainerc20-starter/contracts:update:rpcs",
     "contracts:deploy:token": "pnpm nx run @superchainerc20-starter/contracts:deploy:token",
     "update:toc": "doctoc README.md",
     "e2e-test": "mprocs -c mprocs-e2e-test.yaml",
     "init:env": "pnpm nx run-many --target=init:env",
-    "deploy:contracts:ci": "wait-port http://:8420/ready && cd packages/contracts && forge install && DEPLOY_CONFIG_PATH=/test/configs/test-deploy-config.toml forge script scripts/SuperchainERC20Deployer.s.sol --broadcast --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
+    "contracts:deploy:dev": "pnpm install:contracts && pnpm nx run @superchainerc20-starter/contracts:deploy:dev",
     "e2e-test:ci": "pnpm nx run @superchainerc20-starter/e2e-test:test"
   },
   "license": "MIT",
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "doctoc": "^2.2.1",
+    "env-cmd": "^10.1.0",
     "mprocs": "^0.7.1",
     "nx": "^20.0.7",
     "prettier": "^3.3.3",
