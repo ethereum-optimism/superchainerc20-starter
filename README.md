@@ -27,6 +27,7 @@
   - [Prerequisites](#prerequisites)
   - [Running the Tests](#running-the-tests)
 - [🌉 Example: How to bridge a SuperchainERC20 token to another chain](#-example-how-to-bridge-a-superchainerc20-token-to-another-chain)
+- [Updating an ERC20 contract to be interoperable](#updating-an-erc20-contract-to-be-interoperable)
 - [🤝 Contributing](#-contributing)
 - [⚖️ License](#-license)
 
@@ -226,6 +227,95 @@ Verify that the balance for the recipient of the `L2NativeSuperchainERC20` on ch
 ```sh
 cast balance --erc20 <deployed-token-address> <recipient-address> --rpc-url http://127.0.0.1:9546
 ```
+
+## Updating an ERC20 contract to be interoperable
+
+This section explains how to modify an existing `ERC20` contract to make it interoperable within the Superchain.
+
+In this example, we will update the [GovernanceToken](https://github.com/ethereum-optimism/optimism/blob/80465cd6c428d13166fce351741492f354621643/packages/contracts-bedrock/src/governance/GovernanceToken.sol) `ERC20` to make it interoperable. To do this we just need to implement the [IERC7802](https://ethereum-magicians.org/t/erc-7802-crosschain-token-interface/21508) interface.
+
+**Note:** The `IERC7802` interface is designed to be **minimal** and only specifies the required function signatures (`crosschainMint` and `crosschainBurn`) and events (`CrosschainMint` and `CrosschainBurn`). **Developers have complete control over how these functions are implemented**, including the logic for handling cross-chain minting and burning. This allows flexibility to tailor the behavior to specific use cases or custom bridge solutions. In the example below we show how this interface is implemented for an example token that uses the [`SuperchainTokenBridge`](https://github.com/ethereum-optimism/optimism/blob/develop/packages/contracts-bedrock/src/L2/SuperchainTokenBridge.sol) for cross-chain minting and burning.
+
+**1. Add the IERC7802 interface to the contract**
+
+Import the `IERC7802` and update your contract to inherit from it.
+
+```solidity
+import { IERC7802 } from "@contracts-bedrock/L2/interfaces/IERC7802.sol";
+
+contract GovernanceToken is IERC7802, ERC20Burnable, ERC20Votes, Ownable {
+    // Contract implementation here
+}
+```
+
+**2. Add the `crosschainMint` function to the contract**
+
+The `crosschainMint` function defines how tokens are minted on the destination chain during a cross-chain transfer. While the interface requires the function's signature, **the implementation is entirely up to you.**
+
+In this example, only the `SuperchainTokenBridge` contract will have permissions to mint the token during a crosschain transfer. If you’re using a custom bridge, you could replace `SuperchainTokenBridge` with your bridge contract and implement the desired logic. You can customize this function to add any logic or access control as needed.
+
+```solidity
+/// @notice Allows the SuperchainTokenBridge to mint tokens.
+/// @param _to     Address to mint tokens to.
+/// @param _amount Amount of tokens to mint.
+function crosschainMint(address _to, uint256 _amount) external {
+    // Only the `SuperchainTokenBridge` has permissions to mint tokens during crosschain transfers.
+    if (msg.sender != Predeploys.SUPERCHAIN_TOKEN_BRIDGE) revert Unauthorized();
+    
+    // Mint tokens to the `_to` account's balance.
+    _mint(_to, _amount);
+
+    // Emit the CrosschainMint event included on IERC7802 for tracking token mints associated with cross chain transfers.
+    emit CrosschainMint(_to, _amount, msg.sender);
+}
+```
+
+**3. Add the `crosschainBurn` function to the contract**
+The `crosschainBurn` function defines how tokens are burned on the source chain during a cross-chain transfer. Again, while the interface specifies the function signature, **the implementation is completely flexible.**
+
+In this example, only the `SuperchainTokenBridge` contract will have permissions to burn the token during a crosschain transfer. However, you can modify this to fit your requirements.
+
+```solidity
+/// @notice Allows the SuperchainTokenBridge to burn tokens.
+/// @param _from   Address to burn tokens from.
+/// @param _amount Amount of tokens to burn.
+function crosschainBurn(address _from, uint256 _amount) external {
+    // Only the `SuperchainTokenBridge` has permissions to burn tokens during crosschain transfers.
+    if (msg.sender != Predeploys.SUPERCHAIN_TOKEN_BRIDGE) revert Unauthorized();
+
+    // Burn the tokens from the `_from` account's balance.
+    _burn(_from, _amount);
+
+    // Emit the CrosschainBurn event included on IERC7802 for tracking token burns associated with cross chain transfers.
+    emit CrosschainBurn(_from, _amount, msg.sender);
+}
+```
+
+**4. Add the `supportsInterface` function to the contract**
+
+Since `IERC7802` is an extension of [IERC165](https://eips.ethereum.org/EIPS/eip-165), your contract must implement the `supportsInterface` function to indicate which interfaces it supports.
+
+In this example our token supports `IERC7802`, `IERC20`, and `IERC165`
+
+```solidity
+/// @notice Query if a contract implements an interface
+/// @param interfaceID The interface identifier, as specified in ERC-165
+/// @dev Interface identification is specified in ERC-165. This function
+/// uses less than 30,000 gas.
+/// @return `true` if the contract implements `interfaceID` and
+/// `interfaceID` is not 0xffffffff, `false` otherwise
+function supportsInterface(bytes4 _interfaceId) public view virtual returns (bool) {
+    return _interfaceId == type(IERC7802).interfaceId || _interfaceId == type(IERC20).interfaceId
+        || _interfaceId == type(IERC165).interfaceId;
+}
+```
+
+After following these four steps your token is ready to be interoperable! The full example contract is available [here](packages/contracts/src/examples/L2NativeInteroperableGovernanceToken.sol).
+
+This example showcases that the `IERC7802` interface does not enforce any specific logic for handling cross-chain minting and burning. It only ensures that the required functions and events exist, leaving all implementation details entirely up to you. You can:
+- Use any custom access control mechanisms for `crosschainMint` and `crosschainBurn`.
+- Implement specific checks, restrictions, or business logic tailored to your token's requirements.
+- Integrate the interface with your own bridge or use it with the `SuperchainTokenBridge`.
 
 ## 🤝 Contributing
 
