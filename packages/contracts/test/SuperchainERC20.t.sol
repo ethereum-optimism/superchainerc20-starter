@@ -10,7 +10,7 @@ import {IERC20} from "@openzeppelin/contracts-v5/token/ERC20/IERC20.sol";
 
 // Target contract
 import {SuperchainERC20} from "@contracts-bedrock/L2/SuperchainERC20.sol";
-import {ICrosschainERC20} from "@contracts-bedrock/L2/interfaces/ICrosschainERC20.sol";
+import {IERC7802} from "@contracts-bedrock/L2/interfaces/IERC7802.sol";
 import {ISuperchainERC20} from "@contracts-bedrock/L2/interfaces/ISuperchainERC20.sol";
 import {L2NativeSuperchainERC20} from "src/L2NativeSuperchainERC20.sol";
 
@@ -62,7 +62,7 @@ contract SuperchainERC20Test is Test {
 
         // Look for the emit of the `CrosschainMint` event
         vm.expectEmit(address(superchainERC20));
-        emit ICrosschainERC20.CrosschainMint(_to, _amount);
+        emit IERC7802.CrosschainMint(_to, _amount, SUPERCHAIN_TOKEN_BRIDGE);
 
         // Call the `mint` function with the bridge caller
         vm.prank(SUPERCHAIN_TOKEN_BRIDGE);
@@ -105,7 +105,7 @@ contract SuperchainERC20Test is Test {
 
         // Look for the emit of the `CrosschainBurn` event
         vm.expectEmit(address(superchainERC20));
-        emit ICrosschainERC20.CrosschainBurn(_from, _amount);
+        emit IERC7802.CrosschainBurn(_from, _amount, SUPERCHAIN_TOKEN_BRIDGE);
 
         // Call the `burn` function with the bridge caller
         vm.prank(SUPERCHAIN_TOKEN_BRIDGE);
