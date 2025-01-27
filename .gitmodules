@@ -1,6 +1,12 @@
 [submodule "packages/contracts/lib/forge-std"]
 	path = packages/contracts/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
-[submodule "packages/contracts/lib/optimism"]
-	path = packages/contracts/lib/optimism
-	url = https://github.com/ethereum-optimism/optimism
+[submodule "packages/contracts/lib/solady"]
+	path = packages/contracts/lib/solady
+	url = https://github.com/vectorized/solady
+[submodule "packages/contracts/lib/openzeppelin-contracts"]
+	path = packages/contracts/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts
+[submodule "packages/contracts/lib/interop-lib"]
+	path = packages/contracts/lib/interop-lib
+	url = https://github.com/ethereum-optimism/interop-lib

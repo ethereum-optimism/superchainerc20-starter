@@ -17,9 +17,7 @@ fs_permissions = [
 ]
 
 remappings = [
-  "@contracts-bedrock/=lib/optimism/packages/contracts-bedrock/src/",
-  "@solady/=lib/optimism/packages/contracts-bedrock/lib/solady/src/",
-  "@openzeppelin/contracts-v5=lib/optimism/packages/contracts-bedrock/lib/openzeppelin-contracts-v5/contracts/",
-  "@openzeppelin/contracts/=lib/optimism/packages/contracts-bedrock/lib/openzeppelin-contracts/contracts/",
-  "@solady-v0.0.245/=lib/optimism/packages/contracts-bedrock/lib/solady-v0.0.245/src/"
+  "@interop-lib/=lib/interop-lib/src/",
+  "@solady/=lib/solady/src/",
+  "@openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/"
 ]
