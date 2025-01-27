@@ -261,7 +261,7 @@ In this example, only the `SuperchainTokenBridge` contract will have permissions
 function crosschainMint(address _to, uint256 _amount) external {
     // Only the `SuperchainTokenBridge` has permissions to mint tokens during crosschain transfers.
     if (msg.sender != Predeploys.SUPERCHAIN_TOKEN_BRIDGE) revert Unauthorized();
-    
+
     // Mint tokens to the `_to` account's balance.
     _mint(_to, _amount);
 
@@ -310,9 +310,10 @@ function supportsInterface(bytes4 _interfaceId) public view virtual returns (boo
 }
 ```
 
-After following these four steps your token is ready to be interoperable! The full example contract is available [here](packages/contracts/src/examples/L2NativeInteroperableGovernanceToken.sol).
+After following these four steps your token is ready to be interoperable! The full example contract is available [here](packages/contracts/examples/L2NativeInteroperableGovernanceToken.sol).
 
 This example showcases that the `IERC7802` interface does not enforce any specific logic for handling cross-chain minting and burning. It only ensures that the required functions and events exist, leaving all implementation details entirely up to you. You can:
+
 - Use any custom access control mechanisms for `crosschainMint` and `crosschainBurn`.
 - Implement specific checks, restrictions, or business logic tailored to your token's requirements.
 - Integrate the interface with your own bridge or use it with the `SuperchainTokenBridge`.

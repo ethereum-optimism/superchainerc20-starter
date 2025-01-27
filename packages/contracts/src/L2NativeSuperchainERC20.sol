@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.25;
 
-import {Predeploys} from "@contracts-bedrock/libraries/Predeploys.sol";
-import {SuperchainERC20} from "@contracts-bedrock/L2/SuperchainERC20.sol";
+import {SuperchainERC20} from "./SuperchainERC20.sol";
 import {Ownable} from "@solady/auth/Ownable.sol";
 
 contract L2NativeSuperchainERC20 is SuperchainERC20, Ownable {

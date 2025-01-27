@@ -5,11 +5,10 @@ pragma solidity 0.8.25;
 import {Test} from "forge-std/Test.sol";
 
 // Libraries
-import {Predeploys} from "@contracts-bedrock/libraries/Predeploys.sol";
-import {IERC20} from "@openzeppelin/contracts-v5/token/ERC20/IERC20.sol";
+import {PredeployAddresses} from "@interop-lib/libraries/PredeployAddresses.sol";
+import {IERC20} from "@openzeppelin/contracts/interfaces/IERC20.sol";
 import {Ownable} from "@solady/auth/Ownable.sol";
-import {IOwnable} from "@contracts-bedrock/universal/interfaces/IOwnable.sol";
-import {ERC20} from "@solady-v0.0.245/tokens/ERC20.sol";
+import {ERC20} from "@solady/tokens/ERC20.sol";
 
 // Target contract
 import {L2NativeSuperchainERC20} from "src/L2NativeSuperchainERC20.sol";
@@ -18,8 +17,8 @@ import {L2NativeSuperchainERC20} from "src/L2NativeSuperchainERC20.sol";
 /// @notice Contract for testing the L2NativeSuperchainERC20Test contract.
 contract L2NativeSuperchainERC20Test is Test {
     address internal constant ZERO_ADDRESS = address(0);
-    address internal constant SUPERCHAIN_TOKEN_BRIDGE = Predeploys.SUPERCHAIN_TOKEN_BRIDGE;
-    address internal constant MESSENGER = Predeploys.L2_TO_L2_CROSS_DOMAIN_MESSENGER;
+    address internal constant SUPERCHAIN_TOKEN_BRIDGE = PredeployAddresses.SUPERCHAIN_TOKEN_BRIDGE;
+    address internal constant MESSENGER = PredeployAddresses.L2_TO_L2_CROSS_DOMAIN_MESSENGER;
     address owner;
     address alice;
     address bob;
@@ -73,7 +72,7 @@ contract L2NativeSuperchainERC20Test is Test {
     /// @notice Tests that ownership of the token can be renounced.
     function testRenounceOwnership() public {
         vm.expectEmit(true, true, true, true);
-        emit IOwnable.OwnershipTransferred(owner, address(0));
+        emit Ownable.OwnershipTransferred(owner, address(0));
 
         vm.prank(owner);
         superchainERC20.renounceOwnership();
@@ -86,7 +85,7 @@ contract L2NativeSuperchainERC20Test is Test {
         vm.assume(_newOwner != ZERO_ADDRESS);
 
         vm.expectEmit(true, true, true, true);
-        emit IOwnable.OwnershipTransferred(owner, _newOwner);
+        emit Ownable.OwnershipTransferred(owner, _newOwner);
 
         vm.prank(owner);
         superchainERC20.transferOwnership(_newOwner);

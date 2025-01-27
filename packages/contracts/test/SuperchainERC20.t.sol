@@ -1,25 +1,24 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.25;
+pragma solidity ^0.8.25;
 
 // Testing utilities
 import {Test} from "forge-std/Test.sol";
 
 // Libraries
-import {Predeploys} from "@contracts-bedrock/libraries/Predeploys.sol";
-import {IERC20} from "@openzeppelin/contracts-v5/token/ERC20/IERC20.sol";
+import {PredeployAddresses} from "@interop-lib/libraries/PredeployAddresses.sol";
+import {IERC20} from "@openzeppelin/contracts/interfaces/IERC20.sol";
 
 // Target contract
-import {SuperchainERC20} from "@contracts-bedrock/L2/SuperchainERC20.sol";
-import {IERC7802} from "@contracts-bedrock/L2/interfaces/IERC7802.sol";
-import {ISuperchainERC20} from "@contracts-bedrock/L2/interfaces/ISuperchainERC20.sol";
-import {L2NativeSuperchainERC20} from "src/L2NativeSuperchainERC20.sol";
+import {SuperchainERC20} from "../src/SuperchainERC20.sol";
+import {IERC7802} from "@interop-lib/interfaces/IERC7802.sol";
+import {L2NativeSuperchainERC20} from "../src/L2NativeSuperchainERC20.sol";
 
 /// @title SuperchainERC20Test
 /// @notice Contract for testing the SuperchainERC20 contract.
 contract SuperchainERC20Test is Test {
     address internal constant ZERO_ADDRESS = address(0);
-    address internal constant SUPERCHAIN_TOKEN_BRIDGE = Predeploys.SUPERCHAIN_TOKEN_BRIDGE;
-    address internal constant MESSENGER = Predeploys.L2_TO_L2_CROSS_DOMAIN_MESSENGER;
+    address internal constant SUPERCHAIN_TOKEN_BRIDGE = PredeployAddresses.SUPERCHAIN_TOKEN_BRIDGE;
+    address internal constant MESSENGER = PredeployAddresses.L2_TO_L2_CROSS_DOMAIN_MESSENGER;
 
     SuperchainERC20 public superchainERC20;
 
@@ -40,7 +39,7 @@ contract SuperchainERC20Test is Test {
         vm.assume(_caller != SUPERCHAIN_TOKEN_BRIDGE);
 
         // Expect the revert with `Unauthorized` selector
-        vm.expectRevert(ISuperchainERC20.Unauthorized.selector);
+        vm.expectRevert("Unauthorized");
 
         // Call the `mint` function with the non-bridge caller
         vm.prank(_caller);
@@ -79,7 +78,7 @@ contract SuperchainERC20Test is Test {
         vm.assume(_caller != SUPERCHAIN_TOKEN_BRIDGE);
 
         // Expect the revert with `Unauthorized` selector
-        vm.expectRevert(ISuperchainERC20.Unauthorized.selector);
+        vm.expectRevert("Unauthorized");
 
         // Call the `burn` function with the non-bridge caller
         vm.prank(_caller);
