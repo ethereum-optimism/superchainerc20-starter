@@ -12,13 +12,16 @@ parameters:
   run-main:
     type: boolean
     description: Triggers the main workflow to run
-    # We'll enable this workflow on main by default
-    # and let the user enable it when triggering the pipeline manually
-    default: << pipeline.git.branch.is_default >>
+    default: false
 
 workflows:
   main:
-    when: << pipeline.parameters.run-main >>
+    when: 
+      # We'll enable this workflow on main by default
+      # and let the user enable it when triggering the pipeline manually
+      or: 
+        - << pipeline.git.branch.is_default >>
+        - << pipeline.parameters.run-main >>
     jobs:
       - lint
       - test-e2e
