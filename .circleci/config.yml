@@ -1,0 +1,72 @@
+version: 2.1
+
+executors:
+  default:
+    docker:
+      - image: us-docker.pkg.dev/oplabs-tools-artifacts/images/ci-builder:v0.53.0
+
+orbs:
+  node: circleci/node@7.0.0
+
+workflows:
+  main:
+    when: << pipeline.git.branch.is_default >>
+    jobs:
+      - lint
+      - test-e2e
+      - test-unit
+      - typecheck
+
+commands:
+  install-dependencies:
+    steps:
+      - node/install:
+          install-pnpm: true
+          node-version: '20'
+      - node/install-packages:
+          pkg-manager: pnpm
+
+jobs:
+  lint:
+    executor: default
+    steps:
+      - checkout
+      - install-dependencies
+      - run:
+          name: Run TypeChecker
+          command: pnpm -r lint
+  
+  test-e2e:
+    executor: default
+    environment:
+      DEPLOYER_PRIVATE_KEY: 0x0
+    steps:
+      - checkout
+      - install-dependencies
+      - run:
+          name: Prepare env
+          command: echo "DEPLOYER_PRIVATE_KEY=$DEPLOYER_PRIVATE_KEY" >> packages/contracts/.env
+      - run: 
+          name: Run Tests
+          command: |
+            pnpm supersim &
+            pnpm contracts:deploy:dev
+            pnpm e2e-test:ci
+
+  test-unit:
+    executor: default
+    steps:
+      - checkout
+      - install-dependencies
+      - run:
+          name: Run Tests
+          command: pnpm -r --filter '!e2e-test' test
+  
+  typecheck:
+    executor: default
+    steps:
+      - checkout
+      - install-dependencies
+      - run:
+          name: Run TypeChecker
+          command: pnpm -r typecheck
