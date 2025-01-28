@@ -8,9 +8,17 @@ executors:
 orbs:
   node: circleci/node@7.0.0
 
+parameters:
+  run-main:
+    type: boolean
+    description: Triggers the main workflow to run
+    # We'll enable this workflow on main by default
+    # and let the user enable it when triggering the pipeline manually
+    default: << pipeline.git.branch.is_default >>
+
 workflows:
   main:
-    when: << pipeline.git.branch.is_default >>
+    when: << pipeline.parameters.run-main >>
     jobs:
       - lint
       - test-e2e
