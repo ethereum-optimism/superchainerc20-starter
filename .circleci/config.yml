@@ -1,0 +1,78 @@
+version: 2.1
+
+executors:
+  default:
+    docker:
+      - image: us-docker.pkg.dev/oplabs-tools-artifacts/images/ci-builder:v0.53.0
+
+orbs:
+  node: circleci/node@7.0.0
+
+parameters:
+  test-e2e-deployer-private-key:
+    type: string
+    description: Deployer private key for the E2E tests
+    # The first account created from "test test ... test junk" mnemonic
+    default: "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+
+workflows:
+  main:
+    jobs:
+      - lint
+      - test-e2e
+      - test-unit
+      - typecheck
+
+commands:
+  install-dependencies:
+    steps:
+      - node/install:
+          install-pnpm: true
+          node-version: '20'
+      - node/install-packages:
+          pkg-manager: pnpm
+
+jobs:
+  lint:
+    executor: default
+    steps:
+      - checkout
+      - install-dependencies
+      - run:
+          name: Run TypeChecker
+          command: pnpm -r lint
+  
+  test-e2e:
+    executor: default
+    environment:
+      DEPLOYER_PRIVATE_KEY: << pipeline.parameters.test-e2e-deployer-private-key >>
+    steps:
+      - checkout
+      - install-dependencies
+      - run:
+          name: Prepare env
+          command: echo "DEPLOYER_PRIVATE_KEY=$DEPLOYER_PRIVATE_KEY" >> packages/contracts/.env
+      - run: 
+          name: Run Tests
+          command: |
+            pnpm supersim &
+            pnpm contracts:deploy:dev
+            pnpm e2e-test:ci
+
+  test-unit:
+    executor: default
+    steps:
+      - checkout
+      - install-dependencies
+      - run:
+          name: Run Tests
+          command: pnpm -r --filter '!e2e-test' test
+  
+  typecheck:
+    executor: default
+    steps:
+      - checkout
+      - install-dependencies
+      - run:
+          name: Run TypeChecker
+          command: pnpm -r typecheck
