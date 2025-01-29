@@ -9,10 +9,6 @@ orbs:
   node: circleci/node@7.0.0
 
 parameters:
-  run-main:
-    type: boolean
-    description: Triggers the main workflow to run
-    default: false
   test-e2e-deployer-private-key:
     type: string
     description: Deployer private key for the E2E tests
@@ -21,12 +17,6 @@ parameters:
 
 workflows:
   main:
-    when: 
-      # We'll enable this workflow on main by default
-      # and let the user enable it when triggering the pipeline manually
-      or: 
-        - << pipeline.git.branch.is_default >>
-        - << pipeline.parameters.run-main >>
     jobs:
       - lint
       - test-e2e
