@@ -241,7 +241,7 @@ In this example, we will update the [GovernanceToken](https://github.com/ethereu
 Import the `IERC7802` and update your contract to inherit from it.
 
 ```solidity
-import { IERC7802 } from "@contracts-bedrock/L2/interfaces/IERC7802.sol";
+import { IERC7802 } from "@interop-lib/interfaces/IERC7802.sol";
 
 contract GovernanceToken is IERC7802, ERC20Burnable, ERC20Votes, Ownable {
     // Contract implementation here
