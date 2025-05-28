@@ -1,6 +1,8 @@
 [rpc_endpoints]
 op_chain_a = "http://127.0.0.1:9545"
 op_chain_b = "http://127.0.0.1:9546"
+devent_alpha_0 = "https://interop-alpha-0.optimism.io"
+devnet_alpha_1 = "https://interop-alpha-1.optimism.io"
 
 [profile.default]
 src = "src"
