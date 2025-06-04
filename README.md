@@ -299,7 +299,7 @@ In this example our token supports `IERC7802`, `IERC20`, and `IERC165`
 
 ```solidity
 /// @notice Query if a contract implements an interface
-/// @param interfaceID The interface identifier, as specified in ERC-165
+/// @param _interfaceId The interface identifier, as specified in ERC-165
 /// @dev Interface identification is specified in ERC-165. This function
 /// uses less than 30,000 gas.
 /// @return `true` if the contract implements `interfaceID` and
