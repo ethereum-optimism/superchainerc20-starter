@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+{
+			"type": "npm",
+			"script": "contracts:deploy:dev",
+			"problemMatcher": [],
+			"label": "npm: contracts:deploy:dev",
+			"detail": "pnpm install:contracts && pnpm nx run @superchainerc20-starter/contracts:deploy:dev"
+		}
+	]
+}
