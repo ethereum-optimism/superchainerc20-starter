@@ -13,7 +13,7 @@ parameters:
     type: string
     description: Deployer private key for the E2E tests
     # The first account created from "test test ... test junk" mnemonic
-    default: "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80"
+    default: "0xb6e888081fec686b1C0482D004f68e9B83Fc4022"
 
 workflows:
   main:
@@ -51,7 +51,7 @@ jobs:
       - install-dependencies
       - run:
           name: Prepare env
-          command: echo "DEPLOYER_PRIVATE_KEY=$DEPLOYER_PRIVATE_KEY" >> packages/contracts/.env
+          command: echo "0xb6e888081fec686b1C0482D004f68e9B83Fc4022" >> packages/contracts/.env
       - run: 
           name: Run Tests
           command: |

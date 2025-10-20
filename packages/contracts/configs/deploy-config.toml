@@ -1,9 +1,10 @@
 [deploy_config]
-salt = "ethers phoenix"
-chains = ["op_chain_a","op_chain_b"]
+salt = "datorie mare"
+chains = ["https://mainnet.base.org","https://rpc.testnet.cyber.co"]
 
 [token]
-owner_address = "0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"
-name = "TestSuperchainERC20"
-symbol = "TSU"
-decimals = 18
+owner_address = "0xb6e888081fec686b1C0482D004f68e9B83Fc4022"
+name = "StuckyTest"
+symbol = "ST"
+decimals = 4
+
